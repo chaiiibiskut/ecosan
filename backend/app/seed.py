@@ -32,18 +32,18 @@ VEHICLES_DATA = [
 ]
 
 SANITATION_SITES = [
-    {"name": "Main Gate Washroom", "lat": 22.2615, "lng": 84.8545, "type": "public_washroom", "supply": 500},
-    {"name": "Academic Block A Washroom", "lat": 22.2622, "lng": 84.8552, "type": "public_washroom", "supply": 400},
-    {"name": "Academic Block B Washroom", "lat": 22.2582, "lng": 84.8522, "type": "public_washroom", "supply": 400},
-    {"name": "Central Library Washroom", "lat": 22.2592, "lng": 84.8512, "type": "public_washroom", "supply": 600},
-    {"name": "Boys Hostel 1 Washroom", "lat": 22.2652, "lng": 84.8582, "type": "hostel_washroom", "supply": 800},
-    {"name": "Boys Hostel 2 Washroom", "lat": 22.2655, "lng": 84.8585, "type": "hostel_washroom", "supply": 800},
-    {"name": "Girls Hostel Washroom", "lat": 22.2552, "lng": 84.8482, "type": "hostel_washroom", "supply": 700},
-    {"name": "Sports Complex Washroom", "lat": 22.2602, "lng": 84.8452, "type": "public_washroom", "supply": 300},
-    {"name": "Market Area Washroom", "lat": 22.2562, "lng": 84.8492, "type": "public_washroom", "supply": 500},
-    {"name": "Admin Block Washroom", "lat": 22.2590, "lng": 84.8510, "type": "public_washroom", "supply": 350},
-    {"name": "Staff Quarters Washroom", "lat": 22.2682, "lng": 84.8602, "type": "residential_washroom", "supply": 450},
-    {"name": "Canteen Washroom", "lat": 22.2570, "lng": 84.8500, "type": "public_washroom", "supply": 550},
+    {"name": "Main Gate Washroom", "lat": 22.2615, "lng": 84.8545, "type": "public_washroom", "supply": 500, "footfall": 200, "odor": 150},
+    {"name": "Academic Block A Washroom", "lat": 22.2622, "lng": 84.8552, "type": "public_washroom", "supply": 400, "footfall": 180, "odor": 120},
+    {"name": "Academic Block B Washroom", "lat": 22.2582, "lng": 84.8522, "type": "public_washroom", "supply": 400, "footfall": 160, "odor": 100},
+    {"name": "Central Library Washroom", "lat": 22.2592, "lng": 84.8512, "type": "public_washroom", "supply": 600, "footfall": 220, "odor": 80},
+    {"name": "Boys Hostel 1 Washroom", "lat": 22.2652, "lng": 84.8582, "type": "hostel_washroom", "supply": 800, "footfall": 120, "odor": 200},
+    {"name": "Boys Hostel 2 Washroom", "lat": 22.2655, "lng": 84.8585, "type": "hostel_washroom", "supply": 800, "footfall": 110, "odor": 180},
+    {"name": "Girls Hostel Washroom", "lat": 22.2552, "lng": 84.8482, "type": "hostel_washroom", "supply": 700, "footfall": 100, "odor": 160},
+    {"name": "Sports Complex Washroom", "lat": 22.2602, "lng": 84.8452, "type": "public_washroom", "supply": 300, "footfall": 90, "odor": 140},
+    {"name": "Market Area Washroom", "lat": 22.2562, "lng": 84.8492, "type": "public_washroom", "supply": 500, "footfall": 250, "odor": 300},
+    {"name": "Admin Block Washroom", "lat": 22.2590, "lng": 84.8510, "type": "public_washroom", "supply": 350, "footfall": 80, "odor": 60},
+    {"name": "Staff Quarters Washroom", "lat": 22.2682, "lng": 84.8602, "type": "residential_washroom", "supply": 450, "footfall": 40, "odor": 40},
+    {"name": "Canteen Washroom", "lat": 22.2570, "lng": 84.8500, "type": "public_washroom", "supply": 550, "footfall": 300, "odor": 250},
 ]
 
 
@@ -173,7 +173,9 @@ def seed():
                 last_sanitized_at=datetime.utcnow() - timedelta(hours=hours_ago),
                 uv_c_status=random.random() > 0.2,
                 mist_status=random.random() > 0.3,
-                supply_liters=s["supply"] - random.uniform(0, s["supply"] * 0.6)
+                supply_liters=s["supply"] - random.uniform(0, s["supply"] * 0.6),
+                footfall_per_hour=s["footfall"],
+                odor_level_ppm=s["odor"] + random.uniform(-20, 50)
             )
             db.add(site)
             sites.append(site)

@@ -4,7 +4,7 @@ from typing import List, Optional
 from datetime import datetime
 
 from app.database import get_db
-from app.models import Alert, Bin, AlertSeverity
+from app.models import Alert, Bin, BinStatus, SanitationSite, AlertSeverity
 from app.schemas import AlertResponse, AlertCreate, AlertUpdate
 
 router = APIRouter(prefix="/api/alerts", tags=["alerts"])
@@ -42,6 +42,29 @@ def create_alert(alert_data: AlertCreate, db: Session = Depends(get_db)):
         bin = db.query(Bin).filter(Bin.id == alert_data.bin_id).first()
         if not bin:
             raise HTTPException(status_code=404, detail="Bin not found")
+        
+        existing = db.query(Alert).filter(
+            Alert.bin_id == alert_data.bin_id,
+            Alert.alert_type == alert_data.alert_type,
+            Alert.is_resolved == False
+        ).first()
+        
+        if existing:
+            return existing
+    
+    if alert_data.site_id:
+        site = db.query(SanitationSite).filter(SanitationSite.id == alert_data.site_id).first()
+        if not site:
+            raise HTTPException(status_code=404, detail="Site not found")
+        
+        existing = db.query(Alert).filter(
+            Alert.site_id == alert_data.site_id,
+            Alert.alert_type == alert_data.alert_type,
+            Alert.is_resolved == False
+        ).first()
+        
+        if existing:
+            return existing
     
     alert = Alert(**alert_data.model_dump())
     db.add(alert)
@@ -150,15 +173,15 @@ def check_and_create_alerts(db: Session = Depends(get_db)):
             hours_since = (datetime.utcnow() - site.last_sanitized_at).total_seconds() / 3600
             if hours_since > 24:
                 existing = db.query(Alert).filter(
-                    Alert.bin_id == None,
+                    Alert.site_id == site.id,
                     Alert.alert_type == "sanitization_due",
-                    Alert.message.contains(site.name),
                     Alert.is_resolved == False
                 ).first()
                 
                 if not existing:
                     alert = Alert(
                         bin_id=None,
+                        site_id=site.id,
                         alert_type="sanitization_due",
                         severity=AlertSeverity.WARNING,
                         message=f"Sanitization overdue at {site.name} - last done {int(hours_since)} hours ago"

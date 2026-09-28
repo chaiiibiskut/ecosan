@@ -11,6 +11,19 @@ from app.schemas import KPIResponse
 router = APIRouter(prefix="/api/analytics", tags=["analytics"])
 
 
+def compute_segregation_accuracy(db: Session) -> tuple:
+    """Compute segregation accuracy from verified classifications.
+    Returns (accuracy, note) where accuracy is float or None, note is str or None."""
+    verified = db.query(Classification).filter(Classification.verified_category.isnot(None)).all()
+    
+    if len(verified) < 20:
+        return None, "No verified data yet"
+    
+    correct = sum(1 for c in verified if c.waste_type == c.verified_category)
+    accuracy = round((correct / len(verified)) * 100, 1)
+    return accuracy, None
+
+
 @router.get("/kpis", response_model=KPIResponse)
 def get_kpis(db: Session = Depends(get_db)):
     total_bins = db.query(Bin).filter(Bin.is_active == True).count()
@@ -30,11 +43,7 @@ def get_kpis(db: Session = Depends(get_db)):
     ).all()
     total_waste = sum([r.weight_kg or 0 for r in today_readings])
     
-    classifications = db.query(Classification).filter(
-        func.date(Classification.timestamp) == today
-    ).all()
-    correct = sum([1 for c in classifications if c.confidence > 0.8])
-    segregation_accuracy = round((correct / len(classifications) * 100) if classifications else 94.8, 1)
+    segregation_accuracy, _ = compute_segregation_accuracy(db)
     
     sanitization_index = 89.0
     

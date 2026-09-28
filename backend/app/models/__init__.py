@@ -83,6 +83,7 @@ class BinReading(Base):
     fill_pct = Column(Float, nullable=False)
     weight_kg = Column(Float, nullable=True)
     battery_pct = Column(Float, nullable=True)
+    gas_ppm = Column(Float, nullable=True)
     timestamp = Column(DateTime(timezone=True), server_default=func.now())
 
     bin = relationship("Bin", back_populates="readings")
@@ -120,6 +121,8 @@ class SanitationSite(Base):
     mist_status = Column(Boolean, default=False)
     supply_liters = Column(Float, default=0.0)
     is_active = Column(Boolean, default=True)
+    footfall_per_hour = Column(Integer, default=50)
+    odor_level_ppm = Column(Float, default=0.0)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
@@ -145,6 +148,7 @@ class Alert(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     bin_id = Column(Integer, ForeignKey("bins.id"), nullable=True)
+    site_id = Column(Integer, ForeignKey("sanitation_sites.id"), nullable=True)
     alert_type = Column(String(50), nullable=False)
     severity = Column(Enum(AlertSeverity), default=AlertSeverity.INFO)
     message = Column(Text, nullable=False)
@@ -154,6 +158,7 @@ class Alert(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     bin = relationship("Bin", back_populates="alerts")
+    site = relationship("SanitationSite")
 
 
 class Classification(Base):
@@ -167,6 +172,7 @@ class Classification(Base):
     image_url = Column(String(500), nullable=True)
     model_version = Column(String(50), nullable=True)
     timestamp = Column(DateTime(timezone=True), server_default=func.now())
+    verified_category = Column(Enum(WasteType), nullable=True)
 
     bin = relationship("Bin", back_populates="classifications")
 

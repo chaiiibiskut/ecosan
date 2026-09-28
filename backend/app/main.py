@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 
 from app.config import settings
 from app.database import init_db
-from app.api import bins, vehicles, sanitization, ai_classification, alerts, analytics
+from app.api import bins, vehicles, sanitization, ai_classification, alerts, analytics, dashboard
 
 
 @asynccontextmanager
@@ -33,6 +33,7 @@ app.include_router(sanitization.router)
 app.include_router(ai_classification.router)
 app.include_router(alerts.router)
 app.include_router(analytics.router)
+app.include_router(dashboard.router)
 
 
 @app.get("/")

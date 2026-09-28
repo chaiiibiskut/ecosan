@@ -1,7 +1,8 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, field_validator
 from typing import Optional, List
 from datetime import datetime
 from enum import Enum
+import json
 
 
 class BinStatus(str, Enum):
@@ -93,6 +94,7 @@ class BinReadingCreate(BaseModel):
     fill_pct: float
     weight_kg: Optional[float] = None
     battery_pct: Optional[float] = None
+    gas_ppm: Optional[float] = None
 
 
 class BinReadingResponse(BaseModel):
@@ -101,6 +103,7 @@ class BinReadingResponse(BaseModel):
     fill_pct: float
     weight_kg: Optional[float] = None
     battery_pct: Optional[float] = None
+    gas_ppm: Optional[float] = None
     timestamp: datetime
 
     model_config = ConfigDict(from_attributes=True)
@@ -143,6 +146,8 @@ class SanitationSiteBase(BaseModel):
     lat: float
     lng: float
     site_type: str
+    footfall_per_hour: int = 50
+    odor_level_ppm: float = 0.0
 
 
 class SanitationSiteCreate(SanitationSiteBase):
@@ -155,6 +160,8 @@ class SanitationSiteUpdate(BaseModel):
     mist_status: Optional[bool] = None
     supply_liters: Optional[float] = None
     is_active: Optional[bool] = None
+    footfall_per_hour: Optional[int] = None
+    odor_level_ppm: Optional[float] = None
 
 
 class SanitationSiteResponse(SanitationSiteBase):
@@ -166,6 +173,19 @@ class SanitationSiteResponse(SanitationSiteBase):
     is_active: bool
     created_at: datetime
     updated_at: Optional[datetime] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class SanitizationScoreResponse(BaseModel):
+    site_id: int
+    site_name: str
+    score: int
+    footfall_per_hour: int
+    minutes_since_cleaned: Optional[int]
+    odor_level_ppm: float
+    last_sanitized_at: Optional[datetime]
+    status: str
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -192,6 +212,7 @@ class SanitizationLogResponse(BaseModel):
 
 class AlertBase(BaseModel):
     bin_id: Optional[int] = None
+    site_id: Optional[int] = None
     alert_type: str
     severity: AlertSeverity = AlertSeverity.INFO
     message: str
@@ -213,6 +234,7 @@ class AlertResponse(AlertBase):
     resolved_by: Optional[str] = None
     created_at: datetime
     bin: Optional[BinResponse] = None
+    site: Optional[SanitationSiteResponse] = None
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -224,6 +246,7 @@ class ClassificationBase(BaseModel):
     weight_kg: Optional[float] = None
     image_url: Optional[str] = None
     model_version: Optional[str] = None
+    verified_category: Optional[WasteType] = None
 
 
 class ClassificationCreate(ClassificationBase):
@@ -260,6 +283,16 @@ class RouteResponse(BaseModel):
     created_at: datetime
     vehicle: Optional[VehicleResponse] = None
 
+    @field_validator("bin_ids", mode="before")
+    @classmethod
+    def parse_bin_ids(cls, v):
+        if isinstance(v, str):
+            try:
+                return json.loads(v)
+            except Exception:
+                return []
+        return v
+
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -278,5 +311,5 @@ class KPIResponse(BaseModel):
     total_sites: int
     avg_fill_pct: float
     total_waste_today_kg: float
-    segregation_accuracy: float
+    segregation_accuracy: Optional[float] = None
     sanitization_index: float

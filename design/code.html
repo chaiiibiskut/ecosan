@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface-variant":"#dae2fd","error":"#ba1a1a","on-primary-container":"#f5fff7","surface-container-high":"#e2e7ff","surface-container":"#eaedff","background":"#faf8ff","on-secondary-container":"#006f66","on-primary":"#ffffff","tertiary-container":"#316bf3","error-container":"#ffdad6","on-error":"#ffffff","outline-variant":"#bccac0","surface-dim":"#d2d9f4","on-background":"#131b2e","secondary-fixed-dim":"#6bd8cb","inverse-surface":"#283044","surface":"#faf8ff","on-tertiary-container":"#fefcff","on-secondary":"#ffffff","outline":"#6d7a72","on-secondary-fixed":"#00201d","primary-container":"#00855d","surface-tint":"#006c4a","secondary-fixed":"#89f5e7","tertiary":"#0051d5","surface-bright":"#faf8ff","tertiary-fixed":"#dbe1ff","tertiary-fixed-dim":"#b4c5ff","on-primary-fixed":"#002114","secondary-container":"#86f2e4","surface-container-lowest":"#ffffff","on-tertiary-fixed-variant":"#003ea8","primary-fixed":"#85f8c4","on-surface":"#131b2e","on-tertiary":"#ffffff","on-secondary-fixed-variant":"#005049","surface-container-highest":"#dae2fd","inverse-primary":"#68dba9","secondary":"#006a61","on-error-container":"#93000a","on-tertiary-fixed":"#00174b","surface-container-low":"#f2f3ff","primary-fixed-dim":"#68dba9","inverse-on-surface":"#eef0ff","primary":"#006948","on-primary-fixed-variant":"#005137","on-surface-variant":"#3d4a42"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"margin":"2rem","space-md":"1rem","gutter":"1.5rem","space-sm":"0.5rem","margin-mobile":"1rem","space-xs":"0.25rem","gutter-mobile":"1rem","space-lg":"1.5rem","space-xl":"2.5rem"},fontFamily:{"body-lg":["Inter"],"label-md":["Inter"],"display-lg-mobile":["Plus Jakarta Sans"],"label-sm":["Inter"],"headline-lg":["Plus Jakarta Sans"],"headline-xl":["Plus Jakarta Sans"],"body-md":["Inter"],"headline-md":["Plus Jakarta Sans"],"headline-xl-mobile":["Plus Jakarta Sans"],"display-lg":["Plus Jakarta Sans"],"body-sm":["Inter"],"headline-sm":["Plus Jakarta Sans"],"label-lg":["Inter"]},fontSize:{"body-lg":["16px",{"lineHeight":"26px","letterSpacing":"-0.005em","fontWeight":"400"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"600"}],"display-lg-mobile":["34px",{"lineHeight":"42px","letterSpacing":"-0.02em","fontWeight":"800"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.05em","fontWeight":"700"}],"headline-lg":["28px",{"lineHeight":"36px","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-xl":["36px",{"lineHeight":"44px","letterSpacing":"-0.025em","fontWeight":"700"}],"body-md":["14px",{"lineHeight":"22px","letterSpacing":"0em","fontWeight":"400"}],"headline-md":["22px",{"lineHeight":"30px","letterSpacing":"-0.015em","fontWeight":"600"}],"headline-xl-mobile":["28px",{"lineHeight":"36px","letterSpacing":"-0.02em","fontWeight":"700"}],"display-lg":["48px",{"lineHeight":"56px","letterSpacing":"-0.03em","fontWeight":"800"}],"body-sm":["12px",{"lineHeight":"18px","letterSpacing":"0.005em","fontWeight":"400"}],"headline-sm":["18px",{"lineHeight":"26px","letterSpacing":"-0.01em","fontWeight":"600"}],"label-lg":["14px",{"lineHeight":"20px","letterSpacing":"0.01em","fontWeight":"600"}]}}}};</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 h-20 bg-surface-container-lowest/95 backdrop-blur-xl border-b border-surface-container-high shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50"><div class="h-20 w-full px-space-lg flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md flex-shrink-0"><img alt="EcoSan AI Platform Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UMh0neZRQe-cSm1Pqhi4YM9MxbsM-j3796oxFXxo8gG3UGYxL1fOBYxUoEynkZqFsho0TPfb3ROsBz2qydmdbAnhcLQK-X68xMT8dgP5W8glBp-R7aY7FTLmkmTQ3Rdmpc_EZYs9quQvC-fb6-T8hUINDI2hSOaxtH79c5hPYIbe6JDSI4r1Z172aXw7cMAhTlEjUJnFg78-OcDfSwRgcX0n6OfnYpFerqtiPX-URmf6mzecBufh7Md-Q"/><div class="flex flex-col"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight font-bold">EcoSan Intelligence</span><span class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm tracking-wide uppercase">SIH 26195</span></div><span class="font-label-sm text-label-sm text-on-surface-variant leading-none">Clean &amp; Green Tech AI Platform</span></div></div><div class="flex-1 max-w-xs hidden xl:block"><div class="relative flex items-center w-full"><span class="material-symbols-outlined absolute left-3 text-outline text-[18px]">search</span><input class="w-full h-10 pl-9 pr-3 rounded-lg bg-surface-container-low border border-outline-variant font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary-fixed" placeholder="Search units, smart bins, anomalies..." type="text"/></div></div><div class="flex items-center gap-space-md flex-shrink-0"><div class="hidden md:flex items-center gap-space-xs bg-surface-container-low border border-outline-variant px-space-sm py-1.5 rounded-lg"><span class="material-symbols-outlined text-secondary text-[18px]">location_city</span><span class="font-label-md text-label-md text-on-surface font-semibold">Metropolitan Sector 4</span><span class="material-symbols-outlined text-outline text-[16px]">expand_more</span></div><div class="flex items-center gap-space-xs bg-surface-container px-space-sm py-1.5 rounded-full"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span></span><span class="font-label-sm text-label-sm text-primary uppercase font-bold tracking-wider">IoT Mesh: 99.8% Online</span></div><button class="relative p-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error"></span></button><div class="flex items-center gap-space-sm pl-space-xs border-l border-surface-container-high"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBm_y3Gh5NfFS6gE1RPRwWYy2u6g00cIxIjiPVNN-VIh2Q9g5gbta-irijHqkJ7wSEIR5q8D9yzb-5W1YIiAnD888YuNAHA1PUZFokuZP5ZQwhgoEDvzBxWIB4pwzYOMfWJSkp-o4daXHT14gwJ6Yvv1pAd_VGgsZukZwbMFa3LN-1pyWOiz2lhbyZx1FmqISPwl4mHyYhbK2D03rr9a43jMP0L4NESXjJCE6HB9ZXDSgkly30QeFcZ"/><div class="hidden lg:flex flex-col text-left"><span class="font-label-md text-label-md text-on-surface leading-tight font-semibold">Sarah Jenkins</span><span class="font-label-sm text-label-sm text-secondary font-medium leading-none">Ops Lead</span></div></div></div></div></header><aside class="fixed left-0 top-20 bottom-0 w-64 bg-surface-container-lowest border-r border-surface-container-high z-40 flex flex-col justify-between p-space-md"><div class="space-y-space-md"><div class="px-space-sm pt-space-xs"><span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-bold">Operations Command</span></div><nav class="space-y-1" data-active-classes="bg-primary-container text-on-primary-container font-bold rounded-lg shadow-sm"><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-2.5 transition-colors bg-primary-container text-on-primary-container font-bold rounded-lg shadow-sm" data-path="live-operations" href="#"><span class="material-symbols-outlined text-[20px]">sensors</span><span>Live Operations</span></a><a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-lg text-label-lg transition-colors" data-path="ai-segregation-hub" href="#"><span class="material-symbols-outlined text-[20px]">psychology</span><span>AI Segregation Hub</span></a><a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-lg text-label-lg transition-colors" data-path="disposal-and-fleet-logistics" href="#"><span class="material-symbols-outlined text-[20px]">local_shipping</span><span>Disposal &amp; Fleet Logistics</span></a><a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-lg text-label-lg transition-colors" data-path="sanitization-index" href="#"><span class="material-symbols-outlined text-[20px]">clean_hands</span><span>Sanitization Index</span></a><a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-lg text-label-lg transition-colors" data-path="analytics-and-reports" href="#"><span class="material-symbols-outlined text-[20px]">query_stats</span><span>Analytics &amp; Reports</span></a></nav></div><div class="space-y-space-xs pt-space-md border-t border-surface-container-high"><div class="bg-surface-container-low p-space-sm rounded-lg border border-outline-variant"><div class="flex items-center justify-between mb-1"><span class="font-label-sm text-label-sm text-on-surface-variant">Dispatch AI Auto-Pilot</span><span class="font-label-sm text-label-sm text-primary font-bold">ENGAGED</span></div><div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden"><div class="bg-primary h-full w-4/5 rounded-full"></div></div><p class="font-label-sm text-label-sm text-outline mt-1.5">Next fleet sweep in 14m</p></div><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-md text-label-md transition-colors" href="#"><span class="material-symbols-outlined text-[18px]">help</span><span>Telemetry Helpdesk</span></a></div></aside><div class="pl-64"><main class="relative pt-20 w-full px-space-lg bg-surface min-h-[calc(100vh-5rem)]"><div class="flex flex-col w-full">
+<div class="space-y-space-lg pb-16">
+<!-- Top Command Header Banner -->
+<div class="relative overflow-hidden rounded-xl bg-surface-container-lowest p-space-lg shadow-sm">
+<div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-secondary-container/20 blur-3xl pointer-events-none"></div>
+<div class="absolute right-64 -bottom-20 w-64 h-64 rounded-full bg-primary-fixed/25 blur-2xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-space-md">
+<div class="space-y-1.5">
+<div class="flex flex-wrap items-center gap-space-xs">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/10 text-primary font-label-sm text-label-sm uppercase tracking-wider">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+              SIH PS 26195 • AICTE MIC Clean &amp; Green Tech
+            </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px] text-primary">sync</span>
+              Sync Active • Just now
+            </span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface font-extrabold tracking-tight">
+            Smart Waste Segregation &amp; Sanitization Command Hub
+          </h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-3xl">
+            Autonomous multi-stream sorting pipeline, intelligent route dispatch, and automated bio-sanitization telemetry across Metropolitan Sector 4.
+          </p>
+</div>
+<div class="flex flex-wrap items-center gap-space-xs self-start lg:self-center">
+<button class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md transition-all shadow-sm active:scale-95" id="btn-deploy-drone">
+<span class="material-symbols-outlined text-[18px]">flight_takeoff</span>
+<span>Deploy Sanitization Drone/Crew</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors" id="btn-calibrate">
+<span class="material-symbols-outlined text-[18px] text-secondary">tune</span>
+<span>Calibrate Sorters</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors">
+<span class="material-symbols-outlined text-[18px] text-outline">description</span>
+<span>Compliance Report</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Key Performance Metrics Row (4 KPI Cards) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- KPI 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+<div class="flex items-start justify-between">
+<span class="font-label-md text-label-md uppercase tracking-wider text-outline font-semibold">Segregation Accuracy</span>
+<span class="p-2 rounded-lg bg-primary-fixed/40 text-primary">
+<span class="material-symbols-outlined text-[20px]">psychology</span>
+</span>
+</div>
+<div class="my-3">
+<div class="flex items-baseline gap-2">
+<span class="font-headline-xl text-headline-xl font-bold text-on-surface">94.8%</span>
+<span class="inline-flex items-center text-primary font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span>3.2%
+            </span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">vs. previous 7-day baseline</span>
+</div>
+<div class="pt-2 flex items-center justify-between font-label-sm text-label-sm text-outline">
+<span class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+            NIR &amp; Dual Optical Active
+          </span>
+<span class="font-semibold text-secondary">1.2ms latency</span>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<span class="font-label-md text-label-md uppercase tracking-wider text-outline font-semibold">Real-Time Daily Intake</span>
+<span class="p-2 rounded-lg bg-secondary-container/40 text-secondary">
+<span class="material-symbols-outlined text-[20px]">scale</span>
+</span>
+</div>
+<div class="my-3">
+<div class="flex items-baseline gap-2">
+<span class="font-headline-xl text-headline-xl font-bold text-on-surface">124.6</span>
+<span class="font-label-lg text-label-lg text-on-surface-variant font-medium">Metric Tons</span>
+</div>
+<!-- Multi-segmented Progress Bar -->
+<div class="mt-2.5 h-2 w-full rounded-full bg-surface-container flex overflow-hidden">
+<div class="bg-primary" style="width: 42%" title="Organic/Wet: 42%"></div>
+<div class="bg-tertiary-container" style="width: 38%" title="Dry/Recyclable: 38%"></div>
+<div class="bg-secondary" style="width: 12%" title="Hazardous/E-waste: 12%"></div>
+<div class="bg-error" style="width: 8%" title="Sanitary: 8%"></div>
+</div>
+</div>
+<div class="grid grid-cols-4 gap-1 text-center font-label-sm text-label-sm">
+<span class="text-primary font-bold">Wet 42%</span>
+<span class="text-tertiary font-bold">Dry 38%</span>
+<span class="text-secondary font-bold">E-W 12%</span>
+<span class="text-error font-bold">San 8%</span>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<span class="font-label-md text-label-md uppercase tracking-wider text-outline font-semibold">Smart Bin Fleet Fill</span>
+<span class="p-2 rounded-lg bg-tertiary-fixed/60 text-tertiary">
+<span class="material-symbols-outlined text-[20px]">delete_sweep</span>
+</span>
+</div>
+<div class="my-3">
+<div class="flex items-baseline gap-2">
+<span class="font-headline-xl text-headline-xl font-bold text-on-surface">88</span>
+<span class="font-label-lg text-label-lg text-on-surface-variant font-medium">Monitored Nodes</span>
+</div>
+<div class="flex items-center gap-2 mt-1">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-error-container text-error font-label-sm text-label-sm font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-error animate-ping"></span>
+              6 Nodes &gt; 85% Fill
+            </span>
+<span class="font-body-sm text-body-sm text-outline">Sector 4 Dense</span>
+</div>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
+<div class="bg-tertiary h-full rounded-full" style="width: 71%"></div>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<span class="font-label-md text-label-md uppercase tracking-wider text-outline font-semibold">Sanitization Index (SVI)</span>
+<span class="p-2 rounded-lg bg-primary-fixed/40 text-primary">
+<span class="material-symbols-outlined text-[20px]">sanitizer</span>
+</span>
+</div>
+<div class="my-3 flex items-center justify-between">
+<div>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-xl text-headline-xl font-bold text-on-surface">89</span>
+<span class="font-label-lg text-label-lg text-outline">/100</span>
+</div>
+<span class="font-label-sm text-label-sm font-bold text-primary uppercase">Optimal Biosecurity</span>
+</div>
+<div class="relative w-14 h-14 flex items-center justify-center">
+<svg class="w-14 h-14 -rotate-90" viewbox="0 0 36 36">
+<path class="text-surface-container" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
+<path class="text-primary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="89, 100" stroke-linecap="round" stroke-width="3.5"></path>
+</svg>
+<span class="absolute font-label-sm text-label-sm font-bold text-on-surface">89%</span>
+</div>
+</div>
+<div class="pt-2 flex items-center justify-between font-label-sm text-label-sm text-outline">
+<span>UV-C Deployed: 14 Sites</span>
+<span class="text-secondary font-semibold">VOC &lt; 0.04 ppm</span>
+</div>
+</div>
+</div>
+<!-- Main Operational Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- Left Column (8 cols): Conveyor Live Vision & Fleet Logistics -->
+<div class="lg:col-span-8 space-y-space-lg">
+<!-- AI Vision Stream Component -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-space-md gap-space-xs">
+<div>
+<div class="flex items-center gap-2">
+<span class="p-1 rounded bg-primary-fixed text-primary font-bold">
+<span class="material-symbols-outlined text-[18px]">videocam</span>
+</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">AI Optical &amp; Robotic Sorting Conveyor</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Real-time object detection stream • Line #02 Central Sorting Facility</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface">
+<span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+                Belt Speed: <strong class="font-bold text-primary">1.8 m/s</strong>
+</span>
+<span class="inline-flex items-center px-2 py-1 rounded bg-primary/10 text-primary font-label-sm text-label-sm font-semibold">
+                Pneumatic Jets: ARMED
+              </span>
+</div>
+</div>
+<!-- Synthetic Conveyor Vision Canvas / Visual Representation -->
+<div class="relative w-full h-80 rounded-xl overflow-hidden bg-inverse-surface shadow-inner flex flex-col justify-between p-space-md">
+<!-- Video Metadata Bar -->
+<div class="relative z-10 flex items-center justify-between text-inverse-on-surface font-label-sm text-label-sm backdrop-blur-md bg-inverse-surface/60 px-3 py-1.5 rounded-lg">
+<div class="flex items-center gap-3">
+<span class="flex items-center gap-1 text-primary-fixed">
+<span class="w-2 h-2 rounded-full bg-primary-fixed"></span>
+                  CAM-04 INDUSTRIAL RGB+NIR
+                </span>
+<span>RES: 2560x1440 @ 120 FPS</span>
+<span>MODEL: EcoYOLO-v9-Edge</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-tertiary-fixed font-mono">LATENCY: 8.4ms</span>
+<span class="px-1.5 py-0.5 rounded bg-error text-on-error font-bold">LIVE TELEMETRY</span>
+</div>
+</div>
+<!-- Conveyor Belt Center Graphics & Bounding Boxes -->
+<div class="relative flex-1 my-3 flex items-center justify-center overflow-hidden">
+<!-- Moving grid pattern representing conveyor texture -->
+<div class="absolute inset-0 opacity-15 bg-[radial-gradient(#6bd8cb_1px,transparent_1px)] [background-size:16px_16px]"></div>
+<!-- Bounding Box 1: Organic -->
+<div class="absolute left-6 top-8 w-44 h-32 rounded bg-primary/10 p-2 flex flex-col justify-between backdrop-blur-[2px] transition-transform hover:scale-105" style="outline: 2px solid #00855d;">
+<div class="flex items-center justify-between">
+<span class="px-1.5 py-0.5 rounded bg-primary text-on-primary font-label-sm text-label-sm font-bold">Organic Pulp</span>
+<span class="font-label-sm text-label-sm text-primary-fixed font-bold">98.4%</span>
+</div>
+<div class="font-body-sm text-[11px] text-inverse-on-surface/90 space-y-0.5">
+<p>Weight: ~240g</p>
+<p>Moisture: 72% (NIR)</p>
+<span class="inline-block px-1 rounded bg-primary-container text-on-primary-container font-label-sm text-[10px]">ROUTE → CHUTE A</span>
+</div>
+</div>
+<!-- Bounding Box 2: Recyclable PET -->
+<div class="absolute left-56 bottom-6 w-48 h-36 rounded bg-tertiary-container/15 p-2 flex flex-col justify-between backdrop-blur-[2px] transition-transform hover:scale-105" style="outline: 2px solid #316bf3;">
+<div class="flex items-center justify-between">
+<span class="px-1.5 py-0.5 rounded bg-tertiary-container text-on-tertiary font-label-sm text-label-sm font-bold">PET Flake / Plastic</span>
+<span class="font-label-sm text-label-sm text-tertiary-fixed font-bold">96.1%</span>
+</div>
+<div class="font-body-sm text-[11px] text-inverse-on-surface/90 space-y-0.5">
+<p>Polymer: Type-1 (Clean)</p>
+<p>Air Ejector: Staged (0.4s)</p>
+<span class="inline-block px-1 rounded bg-tertiary text-on-tertiary font-label-sm text-[10px]">ROUTE → OPTICAL AIR JET</span>
+</div>
+</div>
+<!-- Bounding Box 3: Hazardous Battery E-Waste -->
+<div class="absolute right-36 top-10 w-44 h-32 rounded bg-error/20 p-2 flex flex-col justify-between backdrop-blur-[2px] transition-transform hover:scale-105" style="outline: 2px solid #ba1a1a;">
+<div class="flex items-center justify-between">
+<span class="px-1.5 py-0.5 rounded bg-error text-on-error font-label-sm text-label-sm font-bold">Lithium Cell • HAZ</span>
+<span class="font-label-sm text-label-sm text-error-container font-bold">99.2%</span>
+</div>
+<div class="font-body-sm text-[11px] text-inverse-on-surface/90 space-y-0.5">
+<p class="text-error-container font-bold">RISK: Thermal Hazard</p>
+<p>Robotic Gripper Arm: Active</p>
+<span class="inline-block px-1 rounded bg-error text-on-error font-label-sm text-[10px]">ISOLATE → ROBOTIC DIVERTER</span>
+</div>
+</div>
+<!-- Conveyor Direction Arrows Flow -->
+<div class="flex items-center gap-12 text-inverse-on-surface/20 pointer-events-none">
+<span class="material-symbols-outlined text-[48px] animate-pulse">fast_forward</span>
+<span class="material-symbols-outlined text-[48px] animate-pulse">fast_forward</span>
+<span class="material-symbols-outlined text-[48px] animate-pulse">fast_forward</span>
+</div>
+</div>
+<!-- Bottom Live Classifier Feed Metres -->
+<div class="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-2 text-inverse-on-surface">
+<div class="bg-inverse-surface/80 p-2 rounded backdrop-blur-md">
+<span class="text-outline font-label-sm text-label-sm block">Wet Organics Diverted</span>
+<span class="font-headline-sm text-headline-sm font-bold text-primary-fixed">52.3 T</span>
+</div>
+<div class="bg-inverse-surface/80 p-2 rounded backdrop-blur-md">
+<span class="text-outline font-label-sm text-label-sm block">Pure PET Recovered</span>
+<span class="font-headline-sm text-headline-sm font-bold text-tertiary-fixed">47.4 T</span>
+</div>
+<div class="bg-inverse-surface/80 p-2 rounded backdrop-blur-md">
+<span class="text-outline font-label-sm text-label-sm block">Critical Contaminants</span>
+<span class="font-headline-sm text-headline-sm font-bold text-error-container">14 Intercepted</span>
+</div>
+<div class="bg-inverse-surface/80 p-2 rounded backdrop-blur-md">
+<span class="text-outline font-label-sm text-label-sm block">System Efficiency</span>
+<span class="font-headline-sm text-headline-sm font-bold text-secondary-fixed">99.4% Up</span>
+</div>
+</div>
+</div>
+<!-- Bottom Action Row for Conveyor -->
+<div class="mt-space-md pt-space-md flex flex-wrap items-center justify-between gap-space-sm border-t border-surface-container-high">
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Active AI Presets:</span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container text-on-surface font-label-sm text-label-sm">Municipal Mixed</span>
+<span class="px-2.5 py-1 rounded-full bg-primary-fixed/40 text-primary font-label-sm text-label-sm font-semibold">High-Precision Polymer</span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container text-on-surface font-label-sm text-label-sm">Biomedical Pre-Filter</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">videocam_off</span> Pause Stream
+              </button>
+<button class="px-3 py-1.5 rounded-lg bg-primary text-on-primary hover:bg-primary-container font-label-sm text-label-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">bolt</span> Purge Belt Chute
+              </button>
+</div>
+</div>
+</div>
+<!-- Fleet Logistics & Route Dispatch Matrix -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-space-md gap-space-xs">
+<div>
+<div class="flex items-center gap-2">
+<span class="p-1 rounded bg-secondary-fixed text-secondary font-bold">
+<span class="material-symbols-outlined text-[18px]">local_shipping</span>
+</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Automated Fleet Routing &amp; High-Fill Bin Evacuation</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Dynamic AI route optimization saving 28.4% fuel • 4 Electric Collectors in transit</p>
+</div>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container-low text-secondary font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[16px]">electric_bolt</span> ZERO-EMISSION LOGISTICS
+            </span>
+</div>
+<!-- Dynamic Truck Dispatch Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Truck 1 -->
+<div class="bg-surface-container-low rounded-xl p-space-md flex flex-col justify-between hover:bg-surface-container transition-all">
+<div class="flex items-start justify-between">
+<div>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">Unit EV-04</span>
+<span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary font-label-sm text-label-sm font-bold">EN ROUTE</span>
+</div>
+<span class="font-body-sm text-body-sm text-outline">Heavy-Duty Bio-Compactor • 6.2T Cap</span>
+</div>
+<div class="flex items-center gap-1 font-label-sm text-label-sm text-primary font-bold bg-primary-fixed/40 px-2 py-1 rounded">
+<span class="material-symbols-outlined text-[16px]">battery_charging_full</span> 86%
+                </div>
+</div>
+<div class="my-3 space-y-2">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Assigned Cluster: <strong>Plaza Central &amp; Metro Stn</strong></span>
+<span class="font-bold text-error">Bin #14 &amp; #18 Critical</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-2 overflow-hidden flex">
+<div class="bg-primary h-full" style="width: 68%"></div>
+</div>
+<div class="flex justify-between font-body-sm text-body-sm text-outline">
+<span>68% Payload Loaded (4.2 / 6.2T)</span>
+<span>ETA Next Stop: <strong>6 mins</strong></span>
+</div>
+</div>
+<div class="pt-2 flex items-center justify-between">
+<div class="flex items-center gap-1.5 font-label-sm text-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-primary">navigation</span>
+<span>Path: Sector 4 North Bypass (Optimal)</span>
+</div>
+<button class="px-2.5 py-1 rounded bg-surface-container-lowest hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold shadow-xs">
+                  Re-Route
+                </button>
+</div>
+</div>
+<!-- Truck 2 -->
+<div class="bg-surface-container-low rounded-xl p-space-md flex flex-col justify-between hover:bg-surface-container transition-all">
+<div class="flex items-start justify-between">
+<div>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">Unit EV-09</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-bold">COLLECTING</span>
+</div>
+<span class="font-body-sm text-body-sm text-outline">Pneumatic Recyclables Carrier • 4.5T Cap</span>
+</div>
+<div class="flex items-center gap-1 font-label-sm text-label-sm text-secondary font-bold bg-secondary-fixed/50 px-2 py-1 rounded">
+<span class="material-symbols-outlined text-[16px]">battery_5_bar</span> 64%
+                </div>
+</div>
+<div class="my-3 space-y-2">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Assigned Cluster: <strong>Tech Park Phase 2</strong></span>
+<span class="font-bold text-secondary">Dry &amp; E-Waste Sweep</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-2 overflow-hidden flex">
+<div class="bg-secondary h-full" style="width: 44%"></div>
+</div>
+<div class="flex justify-between font-body-sm text-body-sm text-outline">
+<span>44% Payload Loaded (2.0 / 4.5T)</span>
+<span>ETA Depo: <strong>32 mins</strong></span>
+</div>
+</div>
+<div class="pt-2 flex items-center justify-between">
+<div class="flex items-center gap-1.5 font-label-sm text-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-secondary">alt_route</span>
+<span>AI Dynamic reroute active (-3.4 kg CO2)</span>
+</div>
+<button class="px-2.5 py-1 rounded bg-surface-container-lowest hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold shadow-xs">
+                  Re-Route
+                </button>
+</div>
+</div>
+</div>
+<!-- Sector 4 Map Route Preview -->
+<div class="mt-space-md relative rounded-xl overflow-hidden h-44 bg-surface-container-high flex items-center justify-center">
+<div class="w-full h-full bg-cover bg-center" data-location="New Delhi Sector 4 Tech District" style=""></div>
+<div class="absolute inset-0 bg-gradient-to-t from-on-background/80 via-on-background/30 to-transparent flex items-end p-space-md justify-between">
+<div class="text-surface-bright">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary-fixed font-bold">Live Sector 4 GPS Map Stream</span>
+<p class="font-headline-sm text-headline-sm font-bold leading-tight">6 High-Capacity IoT Nodes Flagged for Immediate Extraction</p>
+</div>
+<button class="px-3 py-1.5 rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container font-label-sm text-label-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">fullscreen</span> Expand Full Map
+              </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column (4 cols): Sanitization Control, Alerts & Circular Economy -->
+<div class="lg:col-span-4 space-y-space-lg">
+<!-- Critical Alerts Panel -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex items-center justify-between pb-space-sm">
+<div class="flex items-center gap-2">
+<span class="p-1 rounded bg-error/10 text-error">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Urgent System Alerts</h2>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-bold">2 Action Required</span>
+</div>
+<div class="space-y-3 mt-2">
+<!-- Alert 1 -->
+<div class="p-space-sm rounded-lg bg-error-container/40 space-y-2">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-1.5 text-error font-label-md text-label-md font-bold">
+<span class="material-symbols-outlined text-[18px]">crisis_alert</span>
+<span>Hazardous Cell Leakage</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline">2m ago</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+                Electrochemical sensor spike at <strong>Bin Cluster #14</strong> (Tech Corridor). Electrolyte vapor detected.
+              </p>
+<div class="flex items-center gap-2 pt-1">
+<button class="flex-1 py-1 px-2.5 rounded bg-error text-on-error font-label-sm text-label-sm font-bold hover:bg-on-error-container transition-colors">
+                  Isolate Bin Valve
+                </button>
+<button class="py-1 px-2 rounded bg-surface-container-lowest text-on-surface font-label-sm text-label-sm font-semibold">
+                  Inspect Cam
+                </button>
+</div>
+</div>
+<!-- Alert 2 -->
+<div class="p-space-sm rounded-lg bg-surface-container space-y-2">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-1.5 text-secondary font-label-md text-label-md font-bold">
+<span class="material-symbols-outlined text-[18px]">sanitizer</span>
+<span>Sanitization Cycle Due</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline">In 25m</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+                Automated misting overdue at <strong>Central Market Plaza Public Wash Facilities</strong>. Microbial foot-traffic index: High.
+              </p>
+<button class="w-full py-1 px-2.5 rounded bg-secondary text-on-secondary font-label-sm text-label-sm font-bold hover:bg-on-secondary-container transition-colors">
+                Trigger Bio-Mist Immediately
+              </button>
+</div>
+</div>
+</div>
+<!-- Urban Sanitization Index Monitor -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex items-center justify-between pb-space-sm">
+<div class="flex items-center gap-2">
+<span class="p-1 rounded bg-primary-fixed text-primary">
+<span class="material-symbols-outlined text-[18px]">clean_hands</span>
+</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Sanitization System</h2>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-bold">AUTO-PILOT</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md">Autonomous germicidal &amp; mist dispersion network</p>
+<div class="space-y-space-md">
+<!-- Index 1: Odor & Ammonia Neutralization -->
+<div class="space-y-1.5">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary">air</span> Odor &amp; Ammonia Neutralization
+                </span>
+<span class="font-bold text-primary">94% (Nominal)</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 94%"></div>
+</div>
+<span class="font-body-sm text-[11px] text-outline block">Enzymatic mist sprays deployed at 18 hubs</span>
+</div>
+<!-- Index 2: UV-C Microbial Irradiation -->
+<div class="space-y-1.5">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-tertiary">wb_iridescent</span> UV-C Microbial Kill Rate
+                </span>
+<span class="font-bold text-tertiary">99.7% Log-4</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2 overflow-hidden">
+<div class="bg-tertiary h-full rounded-full" style="width: 99%"></div>
+</div>
+<span class="font-body-sm text-[11px] text-outline block">Public washrooms sanitized every 45 mins</span>
+</div>
+<!-- Index 3: Smart Bin Automatic Lid Disinfection -->
+<div class="space-y-1.5">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">wash</span> Touchless Chute Decontamination
+                </span>
+<span class="font-bold text-secondary">88% Capacity</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2 overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 88%"></div>
+</div>
+<span class="font-body-sm text-[11px] text-outline block">Hydro-peroxide cartridges at 88/88 bins operational</span>
+</div>
+</div>
+<div class="mt-space-md p-space-sm bg-surface-container-low rounded-lg flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">water_drop</span>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface font-bold block">Sanitizer Supply Buffer</span>
+<span class="font-body-sm text-[11px] text-outline">Central reservoir: 4,820 Liters</span>
+</div>
+</div>
+<button class="px-2.5 py-1 rounded bg-surface-container-lowest text-on-surface hover:bg-surface-container font-label-sm text-label-sm font-semibold shadow-xs">
+              Order Refill
+            </button>
+</div>
+</div>
+<!-- Circular Economy Resource Recovery -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex items-center justify-between pb-space-sm">
+<div class="flex items-center gap-2">
+<span class="p-1 rounded bg-secondary-fixed text-secondary">
+<span class="material-symbols-outlined text-[18px]">recycling</span>
+</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Circular Recovery</h2>
+</div>
+<span class="font-label-sm text-label-sm text-secondary font-bold">TODAY</span>
+</div>
+<div class="grid grid-cols-1 gap-space-sm mt-1">
+<div class="flex items-center justify-between p-space-sm rounded-lg bg-surface-container-low">
+<div class="flex items-center gap-2.5">
+<span class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">compost</span>
+</span>
+<div>
+<span class="font-label-md text-label-md font-bold text-on-surface block">Organic Compost</span>
+<span class="font-body-sm text-[11px] text-outline">Sent to City Green Belts</span>
+</div>
+</div>
+<span class="font-headline-sm text-headline-sm font-bold text-primary">18.4 T</span>
+</div>
+<div class="flex items-center justify-between p-space-sm rounded-lg bg-surface-container-low">
+<div class="flex items-center gap-2.5">
+<span class="w-8 h-8 rounded-lg bg-tertiary/10 text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">inventory_2</span>
+</span>
+<div>
+<span class="font-label-md text-label-md font-bold text-on-surface block">Recycled PET Baled</span>
+<span class="font-body-sm text-[11px] text-outline">Industrial Extrusion Feed</span>
+</div>
+</div>
+<span class="font-headline-sm text-headline-sm font-bold text-tertiary">9.2 T</span>
+</div>
+<div class="flex items-center justify-between p-space-sm rounded-lg bg-surface-container-low">
+<div class="flex items-center gap-2.5">
+<span class="w-8 h-8 rounded-lg bg-secondary/10 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">energy_savings_leaf</span>
+</span>
+<div>
+<span class="font-label-md text-label-md font-bold text-on-surface block">Refuse-Derived Fuel</span>
+<span class="font-body-sm text-[11px] text-outline">Diverted from Landfill</span>
+</div>
+</div>
+<span class="font-headline-sm text-headline-sm font-bold text-secondary">14.1 T</span>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm flex items-center justify-between text-outline font-label-sm text-label-sm border-t border-surface-container-high">
+<span>Landfill Diversion Rate</span>
+<span class="font-bold text-primary text-label-md">83.4% Target Met</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Student Innovation Tech Architecture Quick Card (SIH Special Showcase) -->
+<div class="bg-surface-container-low rounded-xl p-space-lg border-l-4 border-primary shadow-xs">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-primary text-on-primary font-label-sm text-label-sm font-bold">
+              SIH INNOVATION HIGHLIGHT
+            </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Embedded IoT + Edge Computer Vision Firmware</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface">
+<strong>Quad-Stream Auto-Classification:</strong> Utilizing NIR spectrometry combined with MobileNetV4 edge nodes directly on municipal bins, reducing improper sorting at source by 78% prior to fleet pickup.
+          </p>
+</div>
+<div class="flex items-center gap-space-sm flex-shrink-0">
+<button class="px-3.5 py-2 rounded-lg bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-md text-label-md font-semibold transition-colors">
+            View Sensor Schema
+          </button>
+<button class="px-3.5 py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md font-semibold transition-colors">
+            AIcte Evaluation Deck
+          </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    const droneBtn = document.getElementById('btn-deploy-drone');
+    const calibrateBtn = document.getElementById('btn-calibrate');
+    
+    if (droneBtn) {
+      droneBtn.addEventListener('click', () => {
+        droneBtn.innerHTML = `<span class="material-symbols-outlined text-[18px] animate-spin">refresh</span><span>Deploying Squad...</span>`;
+        droneBtn.classList.add('opacity-80');
+        setTimeout(() => {
+          droneBtn.innerHTML = `<span class="material-symbols-outlined text-[18px]">check_circle</span><span>Squad Airborne (4 Drones)</span>`;
+          droneBtn.classList.remove('opacity-80');
+        }, 1200);
+      });
+    }
+
+    if (calibrateBtn) {
+      calibrateBtn.addEventListener('click', () => {
+        const originalText = calibrateBtn.innerHTML;
+        calibrateBtn.innerHTML = `<span class="material-symbols-outlined text-[18px] animate-spin">sync</span><span>Calibrating...</span>`;
+        setTimeout(() => {
+          calibrateBtn.innerHTML = `<span class="material-symbols-outlined text-[18px] text-primary">verified</span><span>Calibrated (99.8% Conf)</span>`;
+          setTimeout(() => {
+            calibrateBtn.innerHTML = originalText;
+          }, 2500);
+        }, 1400);
+      });
+    }
+  })();
+</script></main></div></body></html>

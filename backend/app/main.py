@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 
 from app.config import settings
 from app.database import init_db
-from app.api import bins, vehicles, sanitization, ai_classification, alerts, analytics, dashboard
+from app.api import bins, vehicles, routes, sanitization, ai_classification, alerts, analytics, dashboard
 
 
 @asynccontextmanager
@@ -29,6 +29,7 @@ app.add_middleware(
 
 app.include_router(bins.router)
 app.include_router(vehicles.router)
+app.include_router(routes.router)
 app.include_router(sanitization.router)
 app.include_router(ai_classification.router)
 app.include_router(alerts.router)

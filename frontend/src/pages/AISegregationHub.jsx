@@ -1,50 +1,121 @@
+import { cn } from "../utils/cn";
+import { Cpu } from "lucide-react";
+
 export function AISegregationHub() {
   return (
-    <div className="space-y-space-lg">
-      <div className="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
-        <h2 className="font-display font-bold text-headline-lg text-on-surface mb-space-md">
-          AI Segregation Hub
-        </h2>
-        <p className="text-body-md text-on-surface-variant">
-          This page will display the conveyor vision, classification feed, and AI presets.
-        </p>
-        <div className="mt-space-lg grid grid-cols-1 lg:grid-cols-3 gap-space-lg">
-          <div className="lg:col-span-2 card p-space-lg">
-            <p className="text-label-md text-on-surface-variant">Conveyor Vision Stream</p>
-            <div className="mt-4 h-80 bg-inverse-surface rounded-xl flex items-center justify-center">
-              <span className="text-on-surface-variant">Camera Feed Placeholder</span>
+    <div className="space-y-6 animate-fade-in">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="font-headline-lg text-on-surface">AI Segregation Hub</h1>
+          <p className="font-body-md text-on-surface-variant mt-1">
+            Computer vision waste classification, conveyor monitoring, and AI model management
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button className="btn-secondary btn-sm">
+            <span className="material-symbols-outlined text-[18px]">tune</span>
+            Calibrate
+          </button>
+          <button className="btn-primary btn-sm">
+            <span className="material-symbols-outlined text-[18px]">videocam</span>
+            Start Stream
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="kpi-card">
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="kpi-label">Today's Classifications</p>
+              <p className="kpi-value tabular-nums">—</p>
+              <span className="kpi-trend-up">↑ Loading...</span>
+            </div>
+            <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+              <Cpu className="w-6 h-6 text-primary" aria-hidden="true" />
             </div>
           </div>
-          <div className="space-y-space-md">
-            <div className="card p-space-md">
-              <p className="text-label-md text-on-surface-variant">Live Classifications</p>
-              <div className="mt-3 space-y-2 max-h-64 overflow-y-auto">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="flex items-center gap-3 p-2 bg-surface-container rounded-lg">
-                    <span className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
-                      <span className="material-symbols-outlined">recycling</span>
-                    </span>
-                    <div className="flex-1">
-                      <p className="text-body-sm text-on-surface">Classification {i}</p>
-                      <p className="text-body-sm text-on-surface-variant">98.4% confidence</p>
-                    </div>
-                  </div>
-                ))}
+        </div>
+        <div className="kpi-card">
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="kpi-label">Overall Accuracy</p>
+              <p className="kpi-value tabular-nums">—</p>
+              <span className="kpi-trend-up">↑ Loading...</span>
+            </div>
+            <div className="w-12 h-12 rounded-lg bg-success-light flex items-center justify-center">
+              <span className="material-symbols-outlined text-[24px] text-success">psychology</span>
+            </div>
+          </div>
+        </div>
+        <div className="kpi-card">
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="kpi-label">Avg Confidence</p>
+              <p className="kpi-value tabular-nums">—</p>
+              <span className="kpi-trend-up">↑ Loading...</span>
+            </div>
+            <div className="w-12 h-12 rounded-lg bg-tertiary/10 flex items-center justify-center">
+              <span className="material-symbols-outlined text-[24px] text-tertiary">analytics</span>
+            </div>
+          </div>
+        </div>
+        <div className="kpi-card">
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="kpi-label">Hazardous Detected</p>
+              <p className="kpi-value tabular-nums">—</p>
+              <span className="kpi-trend-down">↓ Loading...</span>
+            </div>
+            <div className="w-12 h-12 rounded-lg bg-error-light flex items-center justify-center">
+              <span className="material-symbols-outlined text-[24px] text-error">warning</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="card">
+        <div className="card-header">
+          <h2 className="section-title">Conveyor Vision</h2>
+        </div>
+        <div className="card-body">
+          <div className="aspect-video rounded-xl bg-inverse-surface flex items-center justify-center relative overflow-hidden">
+            <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#6bd8cb_1px,transparent_1px)] [background-size:16px_16px]"></div>
+            <div className="relative z-10 text-center">
+              <span className="material-symbols-outlined text-[48px] text-inverse-on-surface/30">videocam</span>
+              <p className="font-body-md text-inverse-on-surface/60 mt-4">Conveyor Camera Feed</p>
+              <p className="font-body-sm text-inverse-on-surface/40 mt-2">CAM-04 Industrial RGB+NIR · 2560×1440 @ 120 FPS</p>
+              <div className="mt-6 flex items-center justify-center gap-2">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 text-primary font-label-sm text-label-sm">
+                  <span className="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+                  Belt Speed: 1.8 m/s
+                </span>
+                <span className="inline-flex items-center px-2 py-1 rounded bg-tertiary/10 text-tertiary font-label-sm text-label-sm font-semibold">
+                  Pneumatic Jets: ARMED
+                </span>
               </div>
             </div>
-            <div className="card p-space-md">
-              <p className="text-label-md text-on-surface-variant">AI Presets</p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {['Municipal Mixed', 'High-Precision Polymer', 'Biomedical Pre-Filter'].map((preset) => (
-                  <span key={preset} className="px-2.5 py-1 rounded-full bg-surface-container text-on-surface text-label-sm">
-                    {preset}
-                  </span>
-                ))}
+            <div className="absolute bottom-4 left-4 right-4 grid grid-cols-2 md:grid-cols-4 gap-2">
+              <div className="bg-inverse-surface/80 p-2 rounded backdrop-blur-md">
+                <span className="text-inverse-on-surface/60 font-label-sm text-label-sm block">Wet Organics</span>
+                <span className="font-headline-sm font-bold text-primary-fixed tabular-nums">—</span>
+              </div>
+              <div className="bg-inverse-surface/80 p-2 rounded backdrop-blur-md">
+                <span className="text-inverse-on-surface/60 font-label-sm text-label-sm block">PET Recovered</span>
+                <span className="font-headline-sm font-bold text-tertiary-fixed tabular-nums">—</span>
+              </div>
+              <div className="bg-inverse-surface/80 p-2 rounded backdrop-blur-md">
+                <span className="text-inverse-on-surface/60 font-label-sm text-label-sm block">Contaminants</span>
+                <span className="font-headline-sm font-bold text-error-container tabular-nums">—</span>
+              </div>
+              <div className="bg-inverse-surface/80 p-2 rounded backdrop-blur-md">
+                <span className="text-inverse-on-surface/60 font-label-sm text-label-sm block">Efficiency</span>
+                <span className="font-headline-sm font-bold text-secondary-fixed tabular-nums">—</span>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

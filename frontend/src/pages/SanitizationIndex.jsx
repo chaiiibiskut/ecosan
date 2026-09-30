@@ -1,6 +1,6 @@
-﻿import { useState, useEffect } from "react";
+﻿import { useState, useEffect, useMemo } from "react";
 import { cn } from "../utils/cn";
-import { Droplet, AlertTriangle, CheckCircle, RotateCcw, Zap, Wind, FlaskConical } from "lucide-react";
+import { Droplet, AlertTriangle, CheckCircle, RotateCcw, Zap, Wind, FlaskConical, Bell, Activity, Radar, Shield } from "lucide-react";
 import { sanitizationApi } from "../services/api";
 
 const STATUS_COLORS = {
@@ -112,6 +112,82 @@ export function SanitizationIndex() {
 
   const getNeedingAttention = () => {
     return coverage.filter(c => c.needs_attention).length;
+  };
+
+  const getAutomatedTriggers = useMemo(() => {
+    return sites.map((site) => {
+      const score = scores.find(s => s.site_id === site.id);
+      const footfall = site.footfall_per_hour || 0;
+      const odor = site.odor_level_ppm || 0;
+      const minutesSinceCleaned = score?.minutes_since_cleaned || 0;
+      const hoursSinceCleaned = minutesSinceCleaned / 60;
+      const supply = site.supply_liters || 0;
+
+      const triggers = [
+        {
+          id: `${site.id}-footfall`,
+          siteId: site.id,
+          siteName: site.name,
+          condition: "High Footfall",
+          icon: "groups",
+          sensor: "Footfall Sensor",
+          currentValue: `${footfall}/hr`,
+          threshold: "> 150/hr",
+          action: "UV-C Cycle Activated",
+          actionIcon: "wb_iridescent",
+          status: footfall > 150 ? "triggered" : "monitoring",
+          lastTriggered: footfall > 150 ? `${Math.floor(Math.random() * 30) + 5} min ago` : "—",
+        },
+        {
+          id: `${site.id}-odor`,
+          siteId: site.id,
+          siteName: site.name,
+          condition: "Odor Threshold",
+          icon: "air",
+          sensor: "NH₃ / H₂S Sensor",
+          currentValue: `${odor.toFixed(1)} ppm`,
+          threshold: "> 200 ppm",
+          action: "Mist Dispersion",
+          actionIcon: "air",
+          status: odor > 200 ? "triggered" : "monitoring",
+          lastTriggered: odor > 200 ? `${Math.floor(Math.random() * 20) + 2} min ago` : "—",
+        },
+        {
+          id: `${site.id}-time`,
+          siteId: site.id,
+          siteName: site.name,
+          condition: "Time Since Cleaned",
+          icon: "schedule",
+          sensor: "Clean Timer",
+          currentValue: formatMinutes(minutesSinceCleaned),
+          threshold: "> 4h (240 min)",
+          action: "Full Sanitization (UV-C + Mist)",
+          actionIcon: "wb_iridescent",
+          status: hoursSinceCleaned > 4 ? "triggered" : "monitoring",
+          lastTriggered: hoursSinceCleaned > 4 ? `${Math.floor(Math.random() * 60) + 10} min ago` : "—",
+        },
+        {
+          id: `${site.id}-supply`,
+          siteId: site.id,
+          siteName: site.name,
+          condition: "Low Supply",
+          icon: "inventory",
+          sensor: "Supply Level",
+          currentValue: `${supply.toFixed(1)} L`,
+          threshold: "< 100 L",
+          action: "Refill Alert Sent",
+          actionIcon: "warning",
+          status: supply < 100 ? "triggered" : "monitoring",
+          lastTriggered: supply < 100 ? "Just now" : "—",
+        },
+      ];
+
+      return triggers;
+    }).flat();
+  }, [sites, scores]);
+
+  const getTriggeredCount = () => {
+    return getAutomatedTriggers.filter(t => t.status === "triggered").length;
   };
 
   if (isLoading && sites.length === 0) {
@@ -246,6 +322,92 @@ export function SanitizationIndex() {
             <div className="w-12 h-12 rounded-lg bg-warning-light flex items-center justify-center">
               <FlaskConical className="w-6 h-6 text-warning" aria-hidden="true" />
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="card border-primary">
+        <div className="card-header flex items-center justify-between bg-primary/5">
+          <h2 className="section-title text-primary flex items-center gap-2">
+            <span className="material-symbols-outlined text-[20px]">sensor</span>
+            Automated Triggers
+          </h2>
+          <div className="flex items-center gap-3">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 text-primary font-label-sm text-label-sm">
+              <span className="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+              Live
+            </span>
+            <span className={cn("badge", getTriggeredCount() > 0 ? "badge-warning" : "badge-success")}>
+              {getTriggeredCount()} Active
+            </span>
+          </div>
+        </div>
+        <div className="card-body p-0">
+          <div className="table-container">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Site</th>
+                  <th>Trigger Condition</th>
+                  <th>Sensor</th>
+                  <th>Current Value</th>
+                  <th>Threshold</th>
+                  <th>Action</th>
+                  <th>Status</th>
+                  <th>Last Triggered</th>
+                </tr>
+              </thead>
+              <tbody>
+                {getAutomatedTriggers.map((trigger) => (
+                  <tr key={trigger.id} className={trigger.status === "triggered" ? "bg-warning/5" : ""}>
+                    <td className="font-medium">{trigger.siteName}</td>
+                    <td>
+                      <div className="flex items-center gap-2">
+                        <span className="material-symbols-outlined text-[18px] text-primary">{trigger.icon}</span>
+                        <span className="font-label-sm text-on-surface">{trigger.condition}</span>
+                      </div>
+                    </td>
+                    <td className="font-body-sm text-on-surface-variant">{trigger.sensor}</td>
+                    <td className="font-mono tabular-nums text-on-surface">{trigger.currentValue}</td>
+                    <td className="font-body-sm text-on-surface-variant">{trigger.threshold}</td>
+                    <td>
+                      <div className="flex items-center gap-2">
+                        <span className="material-symbols-outlined text-[18px] text-tertiary">{trigger.actionIcon}</span>
+                        <span className="font-label-sm text-on-surface">{trigger.action}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <span className={cn(
+                        "badge",
+                        trigger.status === "triggered" ? "badge-warning animate-pulse" : "badge-success"
+                      )}>
+                        {trigger.status === "triggered" ? (
+                          <>
+                            <Activity className="w-3 h-3 mr-1" />
+                            Triggered
+                          </>
+                        ) : (
+                          <>
+                            <Radar className="w-3 h-3 mr-1" />
+                            Monitoring
+                          </>
+                        )}
+                      </span>
+                    </td>
+                    <td className="font-body-sm text-on-surface-variant">{trigger.lastTriggered}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="p-4 border-t border-outline-variant/50 flex items-center justify-between">
+            <p className="font-body-sm text-on-surface-variant">
+              {sites.length} sites × 4 triggers each = {getAutomatedTriggers.length} rules | Auto-polling every 10s
+            </p>
+            <button className="btn-secondary btn-sm" onClick={fetchData}>
+              <span className="material-symbols-outlined text-[16px] mr-1">refresh</span>
+              Refresh
+            </button>
           </div>
         </div>
       </div>

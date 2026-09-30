@@ -5,6 +5,7 @@ import { AISegregationHub } from "./pages/AISegregationHub";
 import { FleetLogistics } from "./pages/FleetLogistics";
 import { SanitizationIndex } from "./pages/SanitizationIndex";
 import { Analytics } from "./pages/Analytics";
+import { DriverRouteNavigation } from "./pages/DriverRouteNavigation";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/fleet" element={<FleetLogistics />} />
           <Route path="/sanitization" element={<SanitizationIndex />} />
           <Route path="/analytics" element={<Analytics />} />
+          <Route path="/driver" element={<DriverRouteNavigation />} />
         </Route>
       </Routes>
     </BrowserRouter>

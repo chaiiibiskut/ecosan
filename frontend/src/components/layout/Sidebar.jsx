@@ -6,6 +6,7 @@ import {
   Truck,
   Droplet,
   BarChart3,
+  Navigation,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -17,6 +18,7 @@ const navigation = [
   { name: "Fleet Logistics", href: "/fleet", icon: Truck },
   { name: "Sanitization Index", href: "/sanitization", icon: Droplet },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
+  { name: "Driver Navigation", href: "/driver", icon: Navigation },
 ];
 
 export function Sidebar({ isCollapsed, onToggle, isMobile, isMobileOpen }) {

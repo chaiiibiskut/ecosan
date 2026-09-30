@@ -124,6 +124,85 @@
   --letter-spacing-body-sm: 0.005em;
 }
 
+:root {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+
+  --color-primary: #68dba9;
+  --color-primary-hover: #85f8c4;
+  --color-primary-light: #002114;
+  --color-primary-container: #005137;
+  --color-primary-fixed: #006948;
+  --color-primary-fixed-dim: #00855d;
+  --color-on-primary: #002114;
+
+  --color-secondary: #6bd8cb;
+  --color-secondary-hover: #89f5e7;
+  --color-secondary-light: #00201d;
+  --color-secondary-container: #005049;
+  --color-secondary-fixed: #006a61;
+  --color-secondary-fixed-dim: #008378;
+  --color-on-secondary: #00201d;
+  --color-on-secondary-container: #86f2e4;
+
+  --color-tertiary: #b4c5ff;
+  --color-tertiary-hover: #dbe1ff;
+  --color-tertiary-light: #00174b;
+  --color-tertiary-container: #003ea8;
+  --color-tertiary-fixed: #0051d5;
+  --color-tertiary-fixed-dim: #1e6cff;
+  --color-on-tertiary: #00174b;
+  --color-on-tertiary-container: #316bf3;
+
+  --color-error: #ef9a9a;
+  --color-error-light: #4a0808;
+  --color-error-container: #7f1d1d;
+  --color-on-error: #4a0808;
+  --color-on-error-container: #ef9a9a;
+
+  --color-success: #86efac;
+  --color-success-light: #064e2e;
+  --color-on-success: #064e2e;
+
+  --color-warning: #fde047;
+  --color-warning-light: #713f00;
+  --color-on-warning: #713f00;
+
+  --color-info: #93c5fd;
+  --color-info-light: #1e3a5f;
+  --color-on-info: #1e3a5f;
+
+  --color-surface: #1a1f2e;
+  --color-surface-dim: #131827;
+  --color-surface-bright: #22283a;
+  --color-surface-container-lowest: #131827;
+  --color-surface-container-low: #1a1f2e;
+  --color-surface-container: #22283a;
+  --color-surface-container-high: #2a3145;
+  --color-surface-container-highest: #323a50;
+  --color-on-surface: #eef0ff;
+  --color-on-surface-variant: #bccac0;
+  --color-on-surface-variant-strong: #cbd5e1;
+
+  --color-outline: #8c9a92;
+  --color-outline-variant: #4a5a52;
+  --color-surface-tint: #68dba9;
+  --color-background: #0f141f;
+  --color-on-background: #eef0ff;
+
+  --color-inverse-surface: #faf8ff;
+  --color-inverse-on-surface: #131b2e;
+  --color-inverse-primary: #006948;
+
+  --shadow-level1: 0px 4px 20px -2px rgba(0, 0, 0, 0.3);
+  --shadow-level2: 0px 8px 24px -4px rgba(0, 0, 0, 0.4);
+  --shadow-level3: 0px 16px 36px -6px rgba(0, 0, 0, 0.5);
+  --shadow-level4: 0px 24px 48px -8px rgba(0, 0, 0, 0.6);
+}
+
 @layer base {
   * { box-sizing: border-box; }
 
@@ -139,6 +218,7 @@
     background-color: var(--color-background);
     color: var(--color-on-surface);
     line-height: 1.5;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -263,10 +343,10 @@
     @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-label-sm uppercase tracking-wider;
   }
 
-  .badge-success { @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-label-sm uppercase tracking-wider bg-success-light text-success border border-green-200; }
-  .badge-warning { @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-label-sm uppercase tracking-wider bg-warning-light text-warning border border-amber-200; }
-  .badge-error { @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-label-sm uppercase tracking-wider bg-error-light text-error border border-red-200; }
-  .badge-info { @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-label-sm uppercase tracking-wider bg-info-light text-info border border-blue-200; }
+  .badge-success { @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-label-sm uppercase tracking-wider bg-[var(--color-success-light)] text-[var(--color-success)] border border-[var(--color-success)]; }
+  .badge-warning { @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-label-sm uppercase tracking-wider bg-[var(--color-warning-light)] text-[var(--color-warning)] border border-[var(--color-warning)]; }
+  .badge-error { @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-label-sm uppercase tracking-wider bg-[var(--color-error-light)] text-[var(--color-error)] border border-[var(--color-error)]; }
+  .badge-info { @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-label-sm uppercase tracking-wider bg-[var(--color-info-light)] text-[var(--color-info)] border border-[var(--color-info)]; }
   .badge-neutral { @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-label-sm uppercase tracking-wider bg-surface-container-high text-on-surface-variant border border-outline-variant; }
 
   .kpi-card {

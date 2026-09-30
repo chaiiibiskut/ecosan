@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from "react-router-dom";
 import { cn } from "../../utils/cn";
-import { Bell, ChevronDown } from "lucide-react";
+import { Bell, ChevronDown, Sun, Moon } from "lucide-react";
 
 const pageTitles = {
   "/": { title: "Live Operations", description: "Monitor bin fill levels, alerts, and real-time status" },
@@ -19,10 +19,10 @@ const alerts = [
 ];
 
 const alertColors = {
-  danger: { bg: "bg-error-light", border: "border-l-4 border-error", dot: "bg-error" },
-  warning: { bg: "bg-warning-light", border: "border-l-4 border-warning", dot: "bg-warning" },
-  info: { bg: "bg-info-light", border: "border-l-4 border-info", dot: "bg-info" },
-  success: { bg: "bg-success-light", border: "border-l-4 border-success", dot: "bg-success" },
+  danger: { bg: "bg-[var(--color-error-light)]", border: "border-l-4 border-[var(--color-error)]", dot: "bg-[var(--color-error)]" },
+  warning: { bg: "bg-[var(--color-warning-light)]", border: "border-l-4 border-[var(--color-warning)]", dot: "bg-[var(--color-warning)]" },
+  info: { bg: "bg-[var(--color-info-light)]", border: "border-l-4 border-[var(--color-info)]", dot: "bg-[var(--color-info)]" },
+  success: { bg: "bg-[var(--color-success-light)]", border: "border-l-4 border-[var(--color-success)]", dot: "bg-[var(--color-success)]" },
 };
 
 export function TopBar({ onMenuClick, sidebarCollapsed }) {
@@ -30,6 +30,24 @@ export function TopBar({ onMenuClick, sidebarCollapsed }) {
   const pageInfo = pageTitles[location.pathname] || { title: "Dashboard", description: "" };
   const [showNotifications, setShowNotifications] = React.useState(false);
   const [showUserMenu, setShowUserMenu] = React.useState(false);
+  const [isDarkMode, setIsDarkMode] = React.useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("theme");
+      if (saved) return saved === "dark";
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    }
+    return false;
+  });
+
+  React.useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [isDarkMode]);
 
   const unreadCount = alerts.filter((a) => a.type === "danger" || a.type === "warning").length;
 
@@ -116,6 +134,19 @@ export function TopBar({ onMenuClick, sidebarCollapsed }) {
             <span className="font-body-sm text-on-surface-variant">All systems operational</span>
           </div>
 
+          <button
+            onClick={() => setIsDarkMode(!isDarkMode)}
+            className="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors"
+            aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+            title={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {isDarkMode ? (
+              <Sun className="w-5 h-5 text-warning" aria-hidden="true" />
+            ) : (
+              <Moon className="w-5 h-5 text-tertiary" aria-hidden="true" />
+            )}
+          </button>
+
           <div className="relative">
             <button
               onClick={() => setShowUserMenu(!showUserMenu)}
@@ -141,8 +172,10 @@ export function TopBar({ onMenuClick, sidebarCollapsed }) {
                   Profile
                 </button>
                 <button className="w-full px-3 py-2 text-left font-body-sm text-on-surface hover:bg-surface-container-low flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[20px]">dark_mode</span>
-                  Dark mode
+                  <span className="material-symbols-outlined text-[20px]">
+                    {isDarkMode ? "light_mode" : "dark_mode"}
+                  </span>
+                  {isDarkMode ? "Light mode" : "Dark mode"}
                 </button>
                 <div className="border-t border-outline-variant/50 my-1" />
                 <button className="w-full px-3 py-2 text-left font-body-sm text-error hover:bg-surface-container-low flex items-center gap-2">

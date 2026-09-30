@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { cn } from "../utils/cn";
 import { Truck, MapPin, Navigation, Fuel, RotateCcw, AlertTriangle, CheckCircle } from "lucide-react";
 import { vehiclesApi, routesApi, binsApi } from "../services/api";
+import { FleetMap } from "../components/map/FleetMap";
 
 const STATUS_COLORS = {
   idle: "badge-neutral",
@@ -27,6 +28,7 @@ export function FleetLogistics() {
   const [error, setError] = useState(null);
   const [optimizing, setOptimizing] = useState(null);
   const [optimizeResult, setOptimizeResult] = useState(null);
+  const [selectedVehicleId, setSelectedVehicleId] = useState(null);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -283,6 +285,27 @@ export function FleetLogistics() {
           </div>
         </div>
       )}
+
+      <div className="card">
+        <div className="card-header flex items-center justify-between">
+          <h2 className="section-title">Live Fleet Map</h2>
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 text-primary font-label-sm text-label-sm">
+              <span className="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+              Live
+            </span>
+          </div>
+        </div>
+        <div className="card-body p-0">
+          <FleetMap
+            vehicles={vehicles}
+            bins={bins}
+            selectedVehicleId={selectedVehicleId}
+            onVehicleClick={setSelectedVehicleId}
+            height="h-[400px]"
+          />
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="card">

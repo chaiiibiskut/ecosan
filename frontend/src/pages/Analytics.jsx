@@ -211,10 +211,11 @@ export function Analytics() {
           </div>
           <button className="btn-secondary btn-sm" onClick={fetchData} disabled={isLoading}>
             <span className="material-symbols-outlined text-[18px]">refresh</span>
-            Refresh
+            <span className="hidden sm:inline">Refresh</span>
           </button>
           <button className="btn-primary btn-sm">
-            <Download className="w-4 h-4 mr-1" /> Export
+            <Download className="w-4 h-4 mr-1 sm:mr-1" />
+            <span className="hidden sm:inline">Export</span>
           </button>
           {isLoading && (
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 text-primary font-label-sm text-label-sm">
@@ -455,7 +456,7 @@ export function Analytics() {
                       <td className="font-mono tabular-nums">{v.total_distance_km}</td>
                       <td className="font-mono tabular-nums text-success">{v.total_fuel_saved_kg}</td>
                       <td>
-                        <div className="flex items-center gap-2">
+<div className="flex items-center gap-2 flex-wrap">
                           <div className="w-16 h-2 bg-surface-container-high rounded-full overflow-hidden">
                             <div
                               className={cn("h-full transition-all duration-300", v.current_battery_pct < 20 ? "bg-error" : "bg-secondary")}

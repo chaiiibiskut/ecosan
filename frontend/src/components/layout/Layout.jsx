@@ -12,7 +12,7 @@ export function Layout() {
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
+      setIsMobile(window.innerWidth < 768);
     };
     checkMobile();
     window.addEventListener("resize", checkMobile);
@@ -34,18 +34,21 @@ export function Layout() {
       <Sidebar
         isCollapsed={effectiveCollapsed}
         onToggle={toggleSidebar}
+        isMobile={isMobile}
+        isMobileOpen={mobileMenuOpen}
       />
 
       <TopBar
         onMenuClick={toggleSidebar}
         sidebarCollapsed={effectiveCollapsed}
+        isMobile={isMobile}
       />
 
       <BottomBar />
 
       <main
         className={cn(
-          "pt-16 pb-16 lg:pb-0 min-h-screen transition-all duration-300",
+          "pt-16 pb-16 md:pb-0 min-h-screen transition-all duration-300",
           effectiveCollapsed ? "lg:ml-16" : "lg:ml-64"
         )}
         role="main"

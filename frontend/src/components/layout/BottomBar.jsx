@@ -21,7 +21,7 @@ export function BottomBar() {
 
   return (
     <nav
-      className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-surface-container-lowest border-t border-outline-variant/50 shadow-[var(--shadow-level3)]"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-surface-container-lowest border-t border-outline-variant/50 shadow-[var(--shadow-level3)]"
       role="navigation"
       aria-label="Bottom navigation"
     >

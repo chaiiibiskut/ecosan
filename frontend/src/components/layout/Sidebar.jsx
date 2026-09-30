@@ -19,39 +19,49 @@ const navigation = [
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
 ];
 
-export function Sidebar({ isCollapsed, onToggle }) {
+export function Sidebar({ isCollapsed, onToggle, isMobile, isMobileOpen }) {
   const location = useLocation();
+
+  const sidebarClasses = cn(
+    "fixed left-0 top-0 z-40 h-screen bg-surface-container-lowest border-r border-outline-variant/50 transition-all duration-300 ease-in-out flex flex-col",
+    isMobile
+      ? isMobileOpen
+        ? "w-64 translate-x-0 shadow-[var(--shadow-level3)]"
+        : "w-64 -translate-x-full"
+      : isCollapsed
+        ? "w-16"
+        : "w-64"
+  );
 
   return (
     <aside
-      className={cn(
-        "fixed left-0 top-0 z-40 h-screen bg-surface-container-lowest border-r border-outline-variant/50 transition-all duration-300 ease-in-out flex flex-col",
-        isCollapsed ? "w-16" : "w-64"
-      )}
+      className={sidebarClasses}
       aria-label="Main navigation"
     >
       <div className="flex h-16 items-center justify-between px-4 border-b border-outline-variant/50">
-        {!isCollapsed && (
+        {(!isMobile && !isCollapsed) || (isMobile && isMobileOpen) ? (
           <NavLink to="/" className="flex items-center gap-3" aria-label="EcoSan Intelligence Home">
             <img src={logo} alt="" className="w-10 h-10" />
             <span className="font-headline-sm text-on-surface font-extrabold">EcoSan</span>
           </NavLink>
+        ) : null}
+        {!isMobile && (
+          <button
+            onClick={onToggle}
+            className={cn(
+              "p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors",
+              isCollapsed && "ml-auto"
+            )}
+            aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            aria-expanded={!isCollapsed}
+          >
+            {isCollapsed ? (
+              <ChevronRight className="w-5 h-5" aria-hidden="true" />
+            ) : (
+              <ChevronLeft className="w-5 h-5" aria-hidden="true" />
+            )}
+          </button>
         )}
-        <button
-          onClick={onToggle}
-          className={cn(
-            "p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors",
-            isCollapsed && "ml-auto"
-          )}
-          aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-          aria-expanded={!isCollapsed}
-        >
-          {isCollapsed ? (
-            <ChevronRight className="w-5 h-5" aria-hidden="true" />
-          ) : (
-            <ChevronLeft className="w-5 h-5" aria-hidden="true" />
-          )}
-        </button>
       </div>
 
       <nav className="flex-1 overflow-y-auto p-3 space-y-1" role="navigation" aria-label="Main">
@@ -70,11 +80,14 @@ export function Sidebar({ isCollapsed, onToggle }) {
                         : "text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface"
                     )
                   }
-                  title={isCollapsed ? item.name : undefined}
+                  title={(!isMobile && isCollapsed) ? item.name : undefined}
                   aria-current={isActive ? "page" : undefined}
+                  onClick={isMobile ? () => onToggle() : undefined}
                 >
                   <item.icon className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
-                  {!isCollapsed && <span className="truncate">{item.name}</span>}
+                  {(!isMobile && !isCollapsed) || (isMobile && isMobileOpen) ? (
+                    <span className="truncate">{item.name}</span>
+                  ) : null}
                 </NavLink>
               </li>
             );
@@ -82,7 +95,7 @@ export function Sidebar({ isCollapsed, onToggle }) {
         </ul>
       </nav>
 
-      <div className={cn("p-3 border-t border-outline-variant/50", isCollapsed && "hidden")}>
+      <div className={cn("p-3 border-t border-outline-variant/50", (!isMobile && isCollapsed) || (isMobile && !isMobileOpen) ? "hidden" : "block")}>
         <NavLink to="/settings" className="sidebar-link">
           <span className="material-symbols-outlined text-[20px]">settings</span>
           <span>Settings</span>

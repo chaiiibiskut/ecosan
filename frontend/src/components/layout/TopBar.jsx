@@ -25,7 +25,7 @@ const alertColors = {
   success: { bg: "bg-[var(--color-success-light)]", border: "border-l-4 border-[var(--color-success)]", dot: "bg-[var(--color-success)]" },
 };
 
-export function TopBar({ onMenuClick, sidebarCollapsed }) {
+export function TopBar({ onMenuClick, sidebarCollapsed, isMobile }) {
   const location = useLocation();
   const pageInfo = pageTitles[location.pathname] || { title: "Dashboard", description: "" };
   const [showNotifications, setShowNotifications] = React.useState(false);
@@ -55,7 +55,7 @@ export function TopBar({ onMenuClick, sidebarCollapsed }) {
     <header
       className={cn(
         "fixed top-0 right-0 z-30 h-16 bg-surface-container-lowest border-b border-outline-variant/50 flex items-center px-4 transition-all duration-300",
-        sidebarCollapsed ? "left-16" : "left-64"
+        isMobile ? "left-0" : sidebarCollapsed ? "left-16" : "left-64"
       )}
       role="banner"
     >
@@ -63,21 +63,21 @@ export function TopBar({ onMenuClick, sidebarCollapsed }) {
         <div className="flex items-center gap-4 flex-1 min-w-0">
           <button
             onClick={onMenuClick}
-            className="lg:hidden p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface"
+            className="md:hidden p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface"
             aria-label="Open menu"
             aria-expanded="false"
           >
             <span className="material-symbols-outlined text-[24px]">menu</span>
           </button>
 
-          <div className="hidden sm:block">
-            <h1 className="page-title">{pageInfo.title}</h1>
-            <p className="page-subtitle">{pageInfo.description}</p>
+          <div className="hidden md:block min-w-0">
+            <h1 className="page-title truncate">{pageInfo.title}</h1>
+            <p className="page-subtitle truncate">{pageInfo.description}</p>
           </div>
         </div>
 
         <div className="flex items-center gap-2 flex-shrink-0">
-          <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+          <div className="hidden md:flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
             <span className="material-symbols-outlined text-[14px] text-primary animate-ping">sync</span>
             Sync Active · Just now
           </div>
@@ -97,7 +97,7 @@ export function TopBar({ onMenuClick, sidebarCollapsed }) {
           </button>
 
           {showNotifications && (
-            <div className="absolute right-4 top-full mt-2 w-80 bg-surface-container-lowest rounded-xl border border-outline-variant/50 shadow-[var(--shadow-level3)] animate-fade-in z-50">
+            <div className="absolute right-0 top-full mt-2 w-full max-w-sm sm:right-4 sm:max-w-xs md:max-w-[320px] bg-surface-container-lowest rounded-xl border border-outline-variant/50 shadow-[var(--shadow-level3)] animate-fade-in z-50">
               <div className="p-3 border-b border-outline-variant/50 flex items-center justify-between">
                 <h3 className="font-label-md text-on-surface">Notifications</h3>
                 <button className="font-body-sm text-primary hover:underline" onClick={() => setShowNotifications(false)}>Mark all read</button>
@@ -129,7 +129,7 @@ export function TopBar({ onMenuClick, sidebarCollapsed }) {
             </div>
           )}
 
-          <div className="hidden lg:flex items-center gap-3 px-3 py-1.5 rounded-lg bg-surface-container-low border border-outline-variant/50">
+          <div className="hidden md:flex items-center gap-3 px-3 py-1.5 rounded-lg bg-surface-container-low border border-outline-variant/50">
             <span className="material-symbols-outlined text-[18px] text-success">check_circle</span>
             <span className="font-body-sm text-on-surface-variant">All systems operational</span>
           </div>
@@ -162,7 +162,7 @@ export function TopBar({ onMenuClick, sidebarCollapsed }) {
             </button>
 
             {showUserMenu && (
-              <div className="absolute right-0 top-full mt-2 w-48 bg-surface-container-lowest rounded-xl border border-outline-variant/50 shadow-[var(--shadow-level3)] animate-fade-in z-50 py-1">
+              <div className="absolute right-0 top-full mt-2 w-full max-w-sm sm:w-48 bg-surface-container-lowest rounded-xl border border-outline-variant/50 shadow-[var(--shadow-level3)] animate-fade-in z-50 py-1">
                 <div className="px-3 py-2 border-b border-outline-variant/50">
                   <p className="font-label-md text-on-surface">Administrator</p>
                   <p className="font-body-sm text-on-surface-variant">Municipal Corporation</p>

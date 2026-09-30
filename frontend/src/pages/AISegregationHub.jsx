@@ -240,8 +240,8 @@ export function AISegregationHub() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2 card">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+        <div className="xl:col-span-2 card">
           <div className="card-header flex items-center justify-between">
             <h2 className="section-title">Conveyor Vision</h2>
             <div className="flex items-center gap-2">

@@ -261,7 +261,7 @@ export function SanitizationIndex() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         <div className="card">
           <div className="card-header flex items-center justify-between">
             <h2 className="section-title">Sanitization Sites</h2>

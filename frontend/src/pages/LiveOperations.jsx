@@ -41,6 +41,14 @@ export function LiveOperations() {
     return () => clearInterval(interval);
   }, []);
 
+  const collectionEfficiency = useMemo(() => {
+    const today = new Date().toDateString();
+    const todayRoutes = routes.filter(r => new Date(r.created_at).toDateString() === today);
+    if (todayRoutes.length === 0) return "—";
+    const completed = todayRoutes.filter(r => r.status === "completed").length;
+    return ((completed / todayRoutes.length) * 100).toFixed(1);
+  }, [routes]);
+
   if (isLoading && !dashboardData) {
     return (
       <div className="space-y-6 animate-fade-in">
@@ -117,14 +125,6 @@ export function LiveOperations() {
     alerts: alertStats,
     operations,
   } = dashboardData;
-
-  const collectionEfficiency = useMemo(() => {
-    const today = new Date().toDateString();
-    const todayRoutes = routes.filter(r => new Date(r.created_at).toDateString() === today);
-    if (todayRoutes.length === 0) return "—";
-    const completed = todayRoutes.filter(r => r.status === "completed").length;
-    return ((completed / todayRoutes.length) * 100).toFixed(1);
-  }, [routes]);
 
   return (
     <div className="space-y-6 animate-fade-in">

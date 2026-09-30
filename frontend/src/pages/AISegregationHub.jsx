@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { cn } from "../utils/cn";
 import { Cpu, Upload, Image, RotateCcw, CheckCircle, AlertTriangle } from "lucide-react";
 import { aiApi, binsApi } from "../services/api";
@@ -123,6 +123,28 @@ export function AISegregationHub() {
     }
   };
 
+  const todayClassifications = useMemo(() => {
+    const today = new Date().toDateString();
+    return classifications.filter(c => new Date(c.timestamp).toDateString() === today);
+  }, [classifications]);
+
+  const totalToday = useMemo(() => todayClassifications.length, [todayClassifications]);
+  const totalClassifications = useMemo(() => classifications.length, [classifications]);
+  const avgConfidence = useMemo(() =>
+    totalClassifications > 0
+      ? (classifications.reduce((sum, c) => sum + c.confidence, 0) / totalClassifications * 100).toFixed(1)
+      : "—", [classifications, totalClassifications]);
+  const hazardousCount = useMemo(() =>
+    todayClassifications.filter(c => c.waste_type === "hazardous").length, [todayClassifications]);
+  const verifiedCount = useMemo(() =>
+    classifications.filter(c => c.verified_category).length, [classifications]);
+  const accuracy = useMemo(() =>
+    verifiedCount > 0
+      ? ((classifications.filter(c => c.verified_category && c.waste_type === c.verified_category).length / verifiedCount) * 100).toFixed(1)
+      : avgConfidence !== "—" ? avgConfidence : "—",
+    [classifications, verifiedCount, avgConfidence]
+  );
+
   if (isLoading && classifications.length === 0) {
     return (
       <div className="space-y-6 animate-fade-in">
@@ -174,22 +196,6 @@ export function AISegregationHub() {
       </div>
     );
   }
-
-  const todayClassifications = classifications.filter(c => {
-    const today = new Date().toDateString();
-    return new Date(c.timestamp).toDateString() === today;
-  });
-
-  const totalToday = todayClassifications.length;
-  const totalClassifications = classifications.length;
-  const avgConfidence = totalClassifications > 0
-    ? (classifications.reduce((sum, c) => sum + c.confidence, 0) / totalClassifications * 100).toFixed(1)
-    : "—";
-  const hazardousCount = todayClassifications.filter(c => c.waste_type === "hazardous").length;
-  const verifiedCount = classifications.filter(c => c.verified_category).length;
-  const accuracy = verifiedCount > 0
-    ? ((classifications.filter(c => c.verified_category && c.waste_type === c.verified_category).length / verifiedCount) * 100).toFixed(1)
-    : avgConfidence !== "—" ? avgConfidence : "—";
 
   return (
     <div className="space-y-6 animate-fade-in">

@@ -64,6 +64,7 @@ export const analyticsApi = {
   getVehicleEfficiency: () => api.get('/analytics/vehicle-efficiency'),
   getBinFillDistribution: () => api.get('/analytics/bin-fill-distribution'),
   getWasteTypeBreakdown: (params = {}) => api.get('/analytics/waste-type-breakdown', { params }),
+  getWasteTypeBreakdownCollected: (params = {}) => api.get('/analytics/waste-type-breakdown-collected', { params }),
   getSanitizationCoverage: () => api.get('/analytics/sanitization-coverage'),
 };
 

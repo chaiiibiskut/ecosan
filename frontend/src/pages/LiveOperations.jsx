@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { cn } from "../utils/cn";
 import { Trash2 } from "lucide-react";
-import { binsApi, alertsApi, dashboardApi } from "../services/api";
+import { binsApi, alertsApi, dashboardApi, vehiclesApi, routesApi } from "../services/api";
 
 export function LiveOperations() {
   const [dashboardData, setDashboardData] = useState(null);
   const [bins, setBins] = useState([]);
   const [alerts, setAlerts] = useState([]);
+  const [vehicles, setVehicles] = useState([]);
+  const [routes, setRoutes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -14,14 +16,18 @@ export function LiveOperations() {
     setIsLoading(true);
     setError(null);
     try {
-      const [dashboardRes, binsRes, alertsRes] = await Promise.all([
+      const [dashboardRes, binsRes, alertsRes, vehiclesRes, routesRes] = await Promise.all([
         dashboardApi.getSummary(),
         binsApi.list({ active_only: true }),
         alertsApi.list({ resolved: false, limit: 10 }),
+        vehiclesApi.list(),
+        routesApi.list(),
       ]);
       setDashboardData(dashboardRes.data);
       setBins(binsRes.data);
       setAlerts(alertsRes.data);
+      setVehicles(vehiclesRes.data);
+      setRoutes(routesRes.data);
     } catch (err) {
       setError(err.message || "Failed to load data");
     } finally {
@@ -112,6 +118,14 @@ export function LiveOperations() {
     operations,
   } = dashboardData;
 
+  const collectionEfficiency = useMemo(() => {
+    const today = new Date().toDateString();
+    const todayRoutes = routes.filter(r => new Date(r.created_at).toDateString() === today);
+    if (todayRoutes.length === 0) return "—";
+    const completed = todayRoutes.filter(r => r.status === "completed").length;
+    return ((completed / todayRoutes.length) * 100).toFixed(1);
+  }, [routes]);
+
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -178,8 +192,10 @@ export function LiveOperations() {
           <div className="flex items-start justify-between">
             <div>
               <p className="kpi-label">Collection Efficiency</p>
-              <p className="kpi-value tabular-nums">{operations?.segregation_accuracy ?? "—"}%</p>
-              <span className="kpi-trend-up">↑ {operations?.completed_routes_today ?? 0} routes today</span>
+              <p className="kpi-value tabular-nums">{collectionEfficiency !== "—" ? collectionEfficiency + "%" : "—"}</p>
+              <span className={cn("kpi-trend", collectionEfficiency !== "—" && collectionEfficiency >= 80 ? "kpi-trend-up" : "kpi-trend-down")}>
+                {collectionEfficiency !== "—" ? `↑ ${routes.filter(r => new Date(r.created_at).toDateString() === new Date().toDateString() && r.status === "completed").length} completed today` : "↓ No routes today"}
+              </span>
             </div>
             <div className="w-12 h-12 rounded-lg bg-success-light flex items-center justify-center">
               <span className="material-symbols-outlined text-[24px] text-success">check_circle</span>

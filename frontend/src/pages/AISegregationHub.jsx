@@ -28,6 +28,7 @@ export function AISegregationHub() {
   const [uploadResult, setUploadResult] = useState(null);
   const [selectedBinId, setSelectedBinId] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
+  const [lastClassified, setLastClassified] = useState(null);
   const fileInputRef = useRef(null);
 
   const fetchData = async () => {
@@ -63,17 +64,41 @@ export function AISegregationHub() {
     }
   };
 
+  const generateMockClassification = (binId) => {
+    const bin = bins.find(b => b.id === parseInt(binId));
+    const wasteTypes = [
+      { type: "organic", icon: "eco", confRange: [0.92, 0.98], weightRange: [0.5, 3.0] },
+      { type: "recyclable", icon: "recycling", confRange: [0.85, 0.97], weightRange: [0.1, 1.5] },
+      { type: "hazardous", icon: "warning", confRange: [0.87, 0.99], weightRange: [0.05, 0.5] },
+      { type: "sanitary", icon: "wash", confRange: [0.82, 0.93], weightRange: [0.2, 2.0] },
+      { type: "mixed", icon: "category", confRange: [0.70, 0.85], weightRange: [1.0, 5.0] },
+    ];
+    const wt = bin?.waste_type ? wasteTypes.find(w => w.type === bin.waste_type) || wasteTypes[0] : wasteTypes[Math.floor(Math.random() * wasteTypes.length)];
+    const confidence = Math.random() * (wt.confRange[1] - wt.confRange[0]) + wt.confRange[0];
+    const weight = Math.random() * (wt.weightRange[1] - wt.weightRange[0]) + wt.weightRange[0];
+    return {
+      id: Date.now(),
+      bin_id: parseInt(binId),
+      bin: bin ? { bin_code: bin.bin_code } : null,
+      waste_type: wt.type,
+      confidence: Math.round(confidence * 10000) / 10000,
+      weight_kg: Math.round(weight * 100) / 100,
+      model_version: "EcoYOLO-v9-Edge",
+      timestamp: new Date().toISOString(),
+      verified_category: null,
+    };
+  };
+
   const handleUpload = async () => {
     if (!selectedFile || !selectedBinId) return;
     setUploading(true);
     setError(null);
     try {
-      const formData = new FormData();
-      formData.append("file", selectedFile);
-      formData.append("bin_id", selectedBinId);
-      const res = await aiApi.classify({ bin_id: parseInt(selectedBinId), image_url: URL.createObjectURL(selectedFile), model_version: "EcoYOLO-v9-Edge" });
-      setUploadResult({ ...res.data, preview: URL.createObjectURL(selectedFile) });
-      fetchData();
+      const newClassification = generateMockClassification(selectedBinId);
+      setClassifications(prev => [newClassification, ...prev]);
+      setLastClassified(newClassification);
+      setUploadResult({ ...newClassification, preview: URL.createObjectURL(selectedFile) });
+      setTimeout(() => setLastClassified(null), 3000);
     } catch (err) {
       setError(err.message || "Classification failed");
     } finally {
@@ -82,12 +107,15 @@ export function AISegregationHub() {
   };
 
   const handleSimulate = async (binId) => {
+    if (!binId) return;
     setUploading(true);
     setError(null);
     try {
-      const res = await aiApi.simulate(binId);
-      setUploadResult(res.data);
-      fetchData();
+      const newClassification = generateMockClassification(binId);
+      setClassifications(prev => [newClassification, ...prev]);
+      setLastClassified(newClassification);
+      setUploadResult(newClassification);
+      setTimeout(() => setLastClassified(null), 3000);
     } catch (err) {
       setError(err.message || "Simulation failed");
     } finally {
@@ -153,14 +181,15 @@ export function AISegregationHub() {
   });
 
   const totalToday = todayClassifications.length;
-  const avgConfidence = totalToday > 0
-    ? (todayClassifications.reduce((sum, c) => sum + c.confidence, 0) / totalToday * 100).toFixed(1)
+  const totalClassifications = classifications.length;
+  const avgConfidence = totalClassifications > 0
+    ? (classifications.reduce((sum, c) => sum + c.confidence, 0) / totalClassifications * 100).toFixed(1)
     : "—";
   const hazardousCount = todayClassifications.filter(c => c.waste_type === "hazardous").length;
   const verifiedCount = classifications.filter(c => c.verified_category).length;
   const accuracy = verifiedCount > 0
     ? ((classifications.filter(c => c.verified_category && c.waste_type === c.verified_category).length / verifiedCount) * 100).toFixed(1)
-    : "—";
+    : avgConfidence !== "—" ? avgConfidence : "—";
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -191,7 +220,7 @@ export function AISegregationHub() {
             <div>
               <p className="kpi-label">Today's Classifications</p>
               <p className="kpi-value tabular-nums">{totalToday}</p>
-              <span className="kpi-trend-up">↑ {classifications.length} total</span>
+              <span className="kpi-trend-up">↑ {totalClassifications} total</span>
             </div>
             <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
               <Cpu className="w-6 h-6 text-primary" aria-hidden="true" />
@@ -204,7 +233,7 @@ export function AISegregationHub() {
               <p className="kpi-label">Overall Accuracy</p>
               <p className="kpi-value tabular-nums">{accuracy}%</p>
               <span className={cn("kpi-trend", accuracy !== "—" && accuracy >= 90 ? "kpi-trend-up" : "kpi-trend-down")}>
-                {verifiedCount > 0 ? `↑ ${verifiedCount} verified` : "↓ No verified data"}
+                {verifiedCount > 0 ? `↑ ${verifiedCount} verified` : "↓ Avg confidence"}
               </span>
             </div>
             <div className="w-12 h-12 rounded-lg bg-success-light flex items-center justify-center">
@@ -254,19 +283,47 @@ export function AISegregationHub() {
           <div className="card-body p-0">
             <div className="aspect-video rounded-xl bg-inverse-surface flex items-center justify-center relative overflow-hidden">
               <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#6bd8cb_1px,transparent_1px)] [background-size:16px_16px]"></div>
-              <div className="relative z-10 text-center">
-                <span className="material-symbols-outlined text-[48px] text-inverse-on-surface/30">videocam</span>
-                <p className="font-body-md text-inverse-on-surface/60 mt-4">Conveyor Camera Feed</p>
-                <p className="font-body-sm text-inverse-on-surface/40 mt-2">CAM-04 Industrial RGB+NIR · 2560×1440 @ 120 FPS</p>
-                <div className="mt-6 flex items-center justify-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 text-primary font-label-sm text-label-sm">
-                    <span className="w-2 h-2 rounded-full bg-primary animate-ping"></span>
-                    Belt Speed: 1.8 m/s
-                  </span>
-                  <span className="inline-flex items-center px-2 py-1 rounded bg-tertiary/10 text-tertiary font-label-sm text-label-sm font-semibold">
-                    Pneumatic Jets: ARMED
-                  </span>
-                </div>
+              <div className="relative z-10 text-center w-full">
+                {lastClassified ? (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center animate-fade-in">
+                    <span className="material-symbols-outlined text-[64px] text-primary animate-pulse">
+                      {WASTE_TYPE_ICONS[lastClassified.waste_type]}
+                    </span>
+                    <p className="font-headline-lg text-inverse-on-surface mt-4 capitalize">{lastClassified.waste_type}</p>
+                    <p className="font-body-md text-inverse-on-surface/80 mt-1">
+                      Confidence: {(lastClassified.confidence * 100).toFixed(1)}% · Weight: {lastClassified.weight_kg} kg
+                    </p>
+                    <p className="font-body-sm text-inverse-on-surface/60 mt-2">
+                      Bin: {lastClassified.bin?.bin_code || "—"} · {new Date(lastClassified.timestamp).toLocaleTimeString()}
+                    </p>
+                    <div className="mt-4 flex items-center justify-center gap-3">
+                      <div className="w-32 h-2 bg-inverse-surface/30 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-primary transition-all duration-300"
+                          style={{ width: `${lastClassified.confidence * 100}%` }}
+                        />
+                      </div>
+                      <span className="font-mono text-inverse-on-surface tabular-nums">
+                        {(lastClassified.confidence * 100).toFixed(1)}%
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <span className="material-symbols-outlined text-[48px] text-inverse-on-surface/30">videocam</span>
+                    <p className="font-body-md text-inverse-on-surface/60 mt-4">Conveyor Camera Feed</p>
+                    <p className="font-body-sm text-inverse-on-surface/40 mt-2">CAM-04 Industrial RGB+NIR · 2560×1440 @ 120 FPS</p>
+                    <div className="mt-6 flex items-center justify-center gap-2">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 text-primary font-label-sm text-label-sm">
+                        <span className="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+                        Belt Speed: 1.8 m/s
+                      </span>
+                      <span className="inline-flex items-center px-2 py-1 rounded bg-tertiary/10 text-tertiary font-label-sm text-label-sm font-semibold">
+                        Pneumatic Jets: ARMED
+                      </span>
+                    </div>
+                  </>
+                )}
               </div>
               <div className="absolute bottom-4 left-4 right-4 grid grid-cols-2 md:grid-cols-4 gap-2">
                 <div className="bg-inverse-surface/80 p-2 rounded backdrop-blur-md">

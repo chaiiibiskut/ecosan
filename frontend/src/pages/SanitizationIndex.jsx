@@ -28,6 +28,17 @@ export function SanitizationIndex() {
   const [triggering, setTriggering] = useState(null);
   const [triggerResult, setTriggerResult] = useState(null);
 
+  const formatMinutes = (minutes) => {
+    if (minutes === null || minutes === undefined || minutes === "—") return "—";
+    const mins = Number(minutes);
+    if (isNaN(mins)) return "—";
+    const hours = Math.floor(mins / 60);
+    const remainingMins = mins % 60;
+    if (hours > 0 && remainingMins > 0) return `${hours}h ${remainingMins}m`;
+    if (hours > 0) return `${hours}h`;
+    return `${remainingMins}m`;
+  };
+
   const fetchData = async () => {
     setIsLoading(true);
     setError(null);
@@ -304,7 +315,7 @@ export function SanitizationIndex() {
                         <td className="font-body-sm">{site.footfall_per_hour}</td>
                         <td className="font-mono tabular-nums">{site.odor_level_ppm?.toFixed(1) ?? "—"}</td>
                         <td className="font-body-sm text-on-surface-variant">
-                          {site.last_sanitized_at ? new Date(site.last_sanitized_at).toLocaleString() : "Never"}
+                          {site.last_sanitized_at ? formatMinutes((Date.now() - new Date(site.last_sanitized_at).getTime()) / 60000) : "Never"}
                         </td>
                         <td>
                           <span className={cn("inline-flex items-center gap-1", site.uv_c_status ? "text-success" : "text-error")}>
@@ -401,7 +412,7 @@ export function SanitizationIndex() {
                         </span>
                       </td>
                       <td>{score.footfall_per_hour}</td>
-                      <td className="font-mono tabular-nums">{score.minutes_since_cleaned ?? "—"}</td>
+                      <td className="font-mono tabular-nums">{formatMinutes(score.minutes_since_cleaned)}</td>
                       <td className="font-mono tabular-nums">{score.odor_level_ppm?.toFixed(1) ?? "—"}</td>
                       <td className="font-body-sm text-on-surface-variant">
                         {score.last_sanitized_at ? new Date(score.last_sanitized_at).toLocaleString() : "Never"}

@@ -223,7 +223,7 @@ export function FleetLogistics() {
           <div className="flex items-start justify-between">
             <div>
               <p className="kpi-label">Fuel Saved Today</p>
-              <p className="kpi-value tabular-nums">{totalFuelSaved.toFixed(1)} kg</p>
+              <p className="kpi-value tabular-nums">{totalFuelSaved.toFixed(2)} kg</p>
               <span className="kpi-trend-up">↑ {routes.filter(r => r.fuel_saved_kg > 0).length} optimized</span>
             </div>
             <div className="w-12 h-12 rounded-lg bg-success-light flex items-center justify-center">
@@ -278,7 +278,7 @@ export function FleetLogistics() {
                   </div>
                 </div>
                 <span className="badge badge-success">
-                  Saved {optimizeResult.fuel_saved_kg} kg CO₂
+                  Saved {optimizeResult.fuel_saved_kg.toFixed(2)} kg CO₂
                 </span>
               </div>
             )}
@@ -421,7 +421,7 @@ export function FleetLogistics() {
                       </td>
                       <td className="font-mono tabular-nums">{route.distance_km} km</td>
                       <td className="font-mono tabular-nums">{route.estimated_time_min} min</td>
-                      <td className="font-mono tabular-nums text-success">{route.fuel_saved_kg} kg</td>
+                      <td className="font-mono tabular-nums text-success">{route.fuel_saved_kg.toFixed(2)} kg</td>
                       <td>
                         <span className={cn(
                           "badge",

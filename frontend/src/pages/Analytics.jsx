@@ -41,6 +41,7 @@ export function Analytics() {
   const [vehicleEfficiency, setVehicleEfficiency] = useState([]);
   const [binFillDistribution, setBinFillDistribution] = useState([]);
   const [wasteTypeBreakdown, setWasteTypeBreakdown] = useState([]);
+  const [wasteTypeBreakdownCollected, setWasteTypeBreakdownCollected] = useState([]);
   const [sanitizationCoverage, setSanitizationCoverage] = useState([]);
   const [dashboardData, setDashboardData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -57,6 +58,7 @@ export function Analytics() {
         vehicleEfficiencyRes,
         binFillDistributionRes,
         wasteTypeBreakdownRes,
+        wasteTypeBreakdownCollectedRes,
         sanitizationCoverageRes,
         dashboardRes,
       ] = await Promise.all([
@@ -65,6 +67,7 @@ export function Analytics() {
         analyticsApi.getVehicleEfficiency(),
         analyticsApi.getBinFillDistribution(),
         analyticsApi.getWasteTypeBreakdown({ days: timeRange }),
+        analyticsApi.getWasteTypeBreakdownCollected({ days: timeRange }),
         analyticsApi.getSanitizationCoverage(),
         dashboardApi.getSummary(),
       ]);
@@ -73,6 +76,7 @@ export function Analytics() {
       setVehicleEfficiency(vehicleEfficiencyRes.data);
       setBinFillDistribution(binFillDistributionRes.data);
       setWasteTypeBreakdown(wasteTypeBreakdownRes.data);
+      setWasteTypeBreakdownCollected(wasteTypeBreakdownCollectedRes.data);
       setSanitizationCoverage(sanitizationCoverageRes.data);
       setDashboardData(dashboardRes.data);
     } catch (err) {
@@ -369,12 +373,13 @@ export function Analytics() {
                     data={binFillDistribution}
                     cx="50%"
                     cy="50%"
-                    innerRadius={50}
-                    outerRadius={90}
+                    innerRadius={40}
+                    outerRadius={75}
                     dataKey="count"
                     nameKey="status"
                     label={({ status, count, percent }) => `${status}: ${count} (${(percent * 100).toFixed(0)}%)`}
-                    labelLine={false}
+                    labelLine={true}
+                    labelLineType="outer"
                   >
                     {binFillDistribution.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={BIN_STATUS_COLORS[entry.status] || COLORS.primary} />
@@ -400,44 +405,55 @@ export function Analytics() {
             <h2 className="section-title">Waste Type Breakdown ({timeRange} Days)</h2>
           </div>
           <div className="card-body">
-            <div className="h-72 flex items-center justify-center">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={wasteTypeBreakdown}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={50}
-                    outerRadius={90}
-                    dataKey="total_kg"
-                    nameKey="waste_type"
-                    label={({ waste_type, percentage }) => `${waste_type}: ${percentage}%`}
-                    labelLine={false}
-                  >
-                    {wasteTypeBreakdown.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={WASTE_TYPE_COLORS[entry.waste_type] || COLORS.primary} />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(value, name) => [`${value.toFixed(1)} kg`, name]} />
-                  <Legend layout="vertical" align="right" verticalAlign="middle" iconType="circle" iconSize={8} />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="flex flex-wrap justify-center gap-2 mt-4">
-              {wasteTypeBreakdown.map((entry) => (
-                <span
-                  key={entry.waste_type}
-                  className="badge badge-neutral"
-                  style={{
-                    backgroundColor: WASTE_TYPE_COLORS[entry.waste_type] + "20",
-                    borderColor: WASTE_TYPE_COLORS[entry.waste_type],
-                    color: WASTE_TYPE_COLORS[entry.waste_type],
-                  }}
-                >
-                  {entry.waste_type}: {entry.total_kg} kg ({entry.percentage}%)
-                </span>
-              ))}
-            </div>
+            {wasteTypeBreakdownCollected.length === 0 ? (
+              <div className="h-72 flex flex-col items-center justify-center text-on-surface-variant">
+                <span className="material-symbols-outlined text-[48px] mb-4">pie_chart</span>
+                <p className="font-body-md">No waste collection data for this period</p>
+                <p className="font-body-sm mt-1">Bin readings with weight data will appear here</p>
+              </div>
+            ) : (
+              <>
+                <div className="h-72 flex items-center justify-center">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={wasteTypeBreakdownCollected}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={40}
+                        outerRadius={75}
+                        dataKey="total_kg"
+                        nameKey="waste_type"
+                        label={({ waste_type, percentage }) => `${waste_type}: ${percentage}%`}
+                        labelLine={true}
+                        labelLineType="outer"
+                      >
+                        {wasteTypeBreakdownCollected.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={WASTE_TYPE_COLORS[entry.waste_type] || COLORS.primary} />
+                        ))}
+                      </Pie>
+                      <Tooltip formatter={(value, name) => [`${value.toFixed(1)} kg`, name]} />
+                      <Legend layout="vertical" align="right" verticalAlign="middle" iconType="circle" iconSize={8} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="flex flex-wrap justify-center gap-2 mt-4">
+                  {wasteTypeBreakdownCollected.map((entry) => (
+                    <span
+                      key={entry.waste_type}
+                      className="badge badge-neutral"
+                      style={{
+                        backgroundColor: WASTE_TYPE_COLORS[entry.waste_type] + "20",
+                        borderColor: WASTE_TYPE_COLORS[entry.waste_type],
+                        color: WASTE_TYPE_COLORS[entry.waste_type],
+                      }}
+                    >
+                      {entry.waste_type}: {entry.total_kg} kg ({entry.percentage}%)
+                    </span>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -470,7 +486,7 @@ export function Analytics() {
                       <td className="font-mono tabular-nums">{v.total_routes}</td>
                       <td className="font-mono tabular-nums text-success">{v.completed_routes}</td>
                       <td className="font-mono tabular-nums">{v.total_distance_km}</td>
-                      <td className="font-mono tabular-nums text-success">{v.total_fuel_saved_kg}</td>
+                      <td className="font-mono tabular-nums text-success">{v.total_fuel_saved_kg.toFixed(2)}</td>
                       <td>
                         <div className="flex items-center gap-2 flex-wrap">
                           <div className="w-16 h-2 bg-surface-container-high rounded-full overflow-hidden">

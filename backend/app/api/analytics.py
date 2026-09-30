@@ -199,6 +199,36 @@ def get_waste_type_breakdown(
     ]
 
 
+@router.get("/waste-type-breakdown-collected")
+def get_waste_type_breakdown_collected(
+    days: int = Query(7, le=30),
+    db: Session = Depends(get_db)
+):
+    since = datetime.utcnow() - timedelta(days=days)
+    
+    results = db.query(
+        Bin.waste_type,
+        func.sum(BinReading.weight_kg).label("total_kg"),
+        func.count(BinReading.id).label("count")
+    ).join(BinReading, Bin.id == BinReading.bin_id).filter(
+        BinReading.timestamp >= since,
+        BinReading.weight_kg.isnot(None),
+        Bin.is_active == True
+    ).group_by(Bin.waste_type).all()
+    
+    total = sum(r.total_kg or 0 for r in results)
+    
+    return [
+        {
+            "waste_type": r.waste_type.value,
+            "total_kg": round(r.total_kg or 0, 1),
+            "count": r.count,
+            "percentage": round((r.total_kg or 0) / total * 100, 1) if total > 0 else 0
+        }
+        for r in results
+    ]
+
+
 @router.get("/sanitization-coverage")
 def get_sanitization_coverage(db: Session = Depends(get_db)):
     sites = db.query(SanitationSite).filter(SanitationSite.is_active == True).all()

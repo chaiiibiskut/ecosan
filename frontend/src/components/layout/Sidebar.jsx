@@ -95,12 +95,6 @@ export function Sidebar({ isCollapsed, onToggle, isMobile, isMobileOpen }) {
         </ul>
       </nav>
 
-      <div className={cn("p-3 border-t border-outline-variant/50", (!isMobile && isCollapsed) || (isMobile && !isMobileOpen) ? "hidden" : "block")}>
-        <NavLink to="/settings" className="sidebar-link">
-          <span className="material-symbols-outlined text-[20px]">settings</span>
-          <span>Settings</span>
-        </NavLink>
-      </div>
-    </aside>
+      </aside>
   );
 }

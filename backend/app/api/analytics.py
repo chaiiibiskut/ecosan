@@ -171,15 +171,18 @@ def get_bin_fill_distribution(db: Session = Depends(get_db)):
 
 
 @router.get("/waste-type-breakdown")
-def get_waste_type_breakdown(db: Session = Depends(get_db)):
-    today = datetime.utcnow().date()
+def get_waste_type_breakdown(
+    days: int = Query(7, le=30),
+    db: Session = Depends(get_db)
+):
+    since = datetime.utcnow() - timedelta(days=days)
     
     results = db.query(
         Classification.waste_type,
         func.sum(Classification.weight_kg).label("total_kg"),
         func.count(Classification.id).label("count")
     ).filter(
-        func.date(Classification.timestamp) == today,
+        Classification.timestamp >= since,
         Classification.weight_kg.isnot(None)
     ).group_by(Classification.waste_type).all()
     

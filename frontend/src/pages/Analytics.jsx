@@ -1,11 +1,10 @@
 import { useState, useEffect, useMemo } from "react";
 import { cn } from "../utils/cn";
-import { BarChart3, Download, TrendingUp, TrendingDown, Target, Timer, Recycle, AlertTriangle, CheckCircle } from "lucide-react";
+import { BarChart3, Download, Target, Timer, Recycle, AlertTriangle, CheckCircle } from "lucide-react";
 import {
   LineChart, Line, AreaChart, Area, BarChart, Bar,
   PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid,
-  Tooltip, Legend, ResponsiveContainer, RadialBarChart,
-  RadialBar,
+  Tooltip, Legend, ResponsiveContainer,
 } from "recharts";
 import { analyticsApi, dashboardApi } from "../services/api";
 
@@ -25,6 +24,15 @@ const WASTE_TYPE_COLORS = {
   hazardous: COLORS.error,
   sanitary: COLORS.warning,
   mixed: COLORS.secondary,
+};
+
+const BIN_STATUS_COLORS = {
+  empty: COLORS.success,
+  low: COLORS.info,
+  medium: COLORS.warning,
+  high: COLORS.warning,
+  critical: COLORS.error,
+  offline: "#9ca3af",
 };
 
 export function Analytics() {
@@ -56,7 +64,7 @@ export function Analytics() {
         analyticsApi.getSegregationTrends({ days: timeRange }),
         analyticsApi.getVehicleEfficiency(),
         analyticsApi.getBinFillDistribution(),
-        analyticsApi.getWasteTypeBreakdown(),
+        analyticsApi.getWasteTypeBreakdown({ days: timeRange }),
         analyticsApi.getSanitizationCoverage(),
         dashboardApi.getSummary(),
       ]);
@@ -99,13 +107,6 @@ export function Analytics() {
     const total = wasteTypeBreakdown.reduce((sum, w) => sum + w.total_kg, 0);
     return total > 0 ? ((diverted / total) * 100).toFixed(1) : "—";
   }, [wasteTypeBreakdown]);
-
-  const avgResponseTime = useMemo(() => {
-    if (!vehicleEfficiency.length) return "—";
-    const completed = vehicleEfficiency.filter(v => v.completed_routes > 0);
-    if (!completed.length) return "—";
-    return "—"; // Need route completion timestamps
-  }, [vehicleEfficiency]);
 
   const criticalBins = useMemo(() =>
     dashboardData?.bins?.critical ?? 0, [dashboardData]);
@@ -183,6 +184,50 @@ export function Analytics() {
     return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
   };
 
+  const kpiCards = [
+    {
+      label: "Total Waste Collected",
+      value: totalWaste.toLocaleString(undefined, { maximumFractionDigits: 1 }),
+      trend: { text: `↑ ${wasteTrends.length} days`, up: true },
+      icon: BarChart3,
+      iconBg: "bg-primary/10",
+      iconColor: "text-primary",
+    },
+    {
+      label: "Segregation Accuracy",
+      value: segregationAccuracy !== "—" ? segregationAccuracy + "%" : "—",
+      trend: {
+        text: segregationAccuracy !== "—" ? "↑ Verified" : "↓ No verified data",
+        up: segregationAccuracy !== "—" && segregationAccuracy >= 90,
+      },
+      icon: Target,
+      iconBg: "bg-success/10",
+      iconColor: "text-success",
+    },
+    {
+      label: "Landfill Diversion",
+      value: landfillDiversion !== "—" ? landfillDiversion + "%" : "—",
+      trend: {
+        text: landfillDiversion !== "—" ? "↑ Recycled" : "↓ Mixed waste",
+        up: landfillDiversion !== "—" && landfillDiversion >= 50,
+      },
+      icon: Recycle,
+      iconBg: "bg-secondary/10",
+      iconColor: "text-secondary",
+    },
+    {
+      label: "Avg Fill Level",
+      value: avgFill !== "—" ? avgFill + "%" : "—",
+      trend: {
+        text: criticalBins > 0 ? `↑ ${criticalBins} critical` : "↓ Normal",
+        up: criticalBins === 0,
+      },
+      icon: Timer,
+      iconBg: "bg-tertiary/10",
+      iconColor: "text-tertiary",
+    },
+  ];
+
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -192,7 +237,7 @@ export function Analytics() {
             Waste trends, segregation accuracy, landfill diversion, and performance metrics
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-1 border border-outline-variant rounded-lg overflow-hidden">
             {[7, 30].map((days) => (
               <button
@@ -227,71 +272,33 @@ export function Analytics() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="kpi-card">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="kpi-label">Total Waste Collected</p>
-              <p className="kpi-value tabular-nums">{totalWaste.toLocaleString(undefined, {maximumFractionDigits: 1})}</p>
-              <span className="kpi-trend-up">↑ {wasteTrends.length} days</span>
-            </div>
-            <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-              <BarChart3 className="w-6 h-6 text-primary" aria-hidden="true" />
-            </div>
-          </div>
-        </div>
-        <div className="kpi-card">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="kpi-label">Segregation Accuracy</p>
-              <p className="kpi-value tabular-nums">{segregationAccuracy !== "—" ? segregationAccuracy + "%" : "—"}</p>
-              <span className={cn("kpi-trend", segregationAccuracy !== "—" && segregationAccuracy >= 90 ? "kpi-trend-up" : "kpi-trend-down")}>
-                {segregationAccuracy !== "—" ? "↑ Verified" : "↓ No verified data"}
-              </span>
-            </div>
-            <div className="w-12 h-12 rounded-lg bg-success-light flex items-center justify-center">
-              <Target className="w-6 h-6 text-success" aria-hidden="true" />
+        {kpiCards.map((kpi, idx) => (
+          <div key={idx} className="kpi-card">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="kpi-label">{kpi.label}</p>
+                <p className="kpi-value tabular-nums">{kpi.value}</p>
+                <span className={cn("kpi-trend", kpi.trend.up ? "kpi-trend-up" : "kpi-trend-down")}>
+                  {kpi.trend.text}
+                </span>
+              </div>
+              <div className={cn("w-12 h-12 rounded-lg flex items-center justify-center", kpi.iconBg)}>
+                <kpi.icon className={cn("w-6 h-6", kpi.iconColor)} aria-hidden="true" />
+              </div>
             </div>
           </div>
-        </div>
-        <div className="kpi-card">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="kpi-label">Landfill Diversion</p>
-              <p className="kpi-value tabular-nums">{landfillDiversion !== "—" ? landfillDiversion + "%" : "—"}</p>
-              <span className={cn("kpi-trend", landfillDiversion !== "—" && landfillDiversion >= 50 ? "kpi-trend-up" : "kpi-trend-down")}>
-                {landfillDiversion !== "—" ? "↑ Recycled" : "↓ Mixed waste"}
-              </span>
-            </div>
-            <div className="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center">
-              <Recycle className="w-6 h-6 text-secondary" aria-hidden="true" />
-            </div>
-          </div>
-        </div>
-        <div className="kpi-card">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="kpi-label">Avg Fill Level</p>
-              <p className="kpi-value tabular-nums">{avgFill !== "—" ? avgFill + "%" : "—"}</p>
-              <span className={cn("kpi-trend", criticalBins > 0 ? "kpi-trend-up" : "kpi-trend-down")}>
-                {criticalBins > 0 ? `↑ ${criticalBins} critical` : "↓ Normal"}
-              </span>
-            </div>
-            <div className="w-12 h-12 rounded-lg bg-tertiary/10 flex items-center justify-center">
-              <Timer className="w-6 h-6 text-tertiary" aria-hidden="true" />
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="card">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="card lg:col-span-2 xl:col-span-2">
           <div className="card-header">
             <h2 className="section-title">Waste Collection Trends ({timeRange} Days)</h2>
           </div>
           <div className="card-body">
-            <div className="h-72">
+            <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={wasteTrends}>
+                <AreaChart data={wasteTrends} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                   <defs>
                     <linearGradient id="colorWaste" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor={COLORS.primary} stopOpacity={0.3} />
@@ -299,8 +306,8 @@ export function Analytics() {
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" className="stroke-outline-variant/30" />
-                  <XAxis dataKey="date" tickFormatter={formatDate} className="text-on-surface-variant" />
-                  <YAxis className="text-on-surface-variant" tickFormatter={v => v.toLocaleString()} />
+                  <XAxis dataKey="date" tickFormatter={formatDate} className="text-on-surface-variant" tick={{ fontSize: 11 }} />
+                  <YAxis className="text-on-surface-variant" tickFormatter={v => v.toLocaleString()} tick={{ fontSize: 11 }} />
                   <Tooltip content={<CustomTooltip />} />
                   <Area
                     type="monotone"
@@ -313,26 +320,26 @@ export function Analytics() {
                 </AreaChart>
               </ResponsiveContainer>
             </div>
-            <div className="flex items-center justify-between mt-4 text-sm text-on-surface-variant">
+            <div className="flex flex-wrap items-center justify-between gap-2 mt-4 text-sm text-on-surface-variant">
               <span>Total: {totalWaste.toLocaleString()} kg</span>
-              <span>Avg/Day: {(totalWaste / (wasteTrends.length || 1)).toLocaleString(undefined, {maximumFractionDigits: 1})} kg</span>
+              <span>Avg/Day: {(totalWaste / (wasteTrends.length || 1)).toLocaleString(undefined, { maximumFractionDigits: 1 })} kg</span>
             </div>
           </div>
         </div>
 
-        <div className="card">
+        <div className="card xl:col-span-1">
           <div className="card-header">
-            <h2 className="section-title">Segregation Accuracy by Type ({timeRange} Days)</h2>
+            <h2 className="section-title">Segregation Accuracy ({timeRange} Days)</h2>
           </div>
           <div className="card-body">
-            <div className="h-72">
+            <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={segregationTrends}>
+                <LineChart data={segregationTrends} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" className="stroke-outline-variant/30" />
-                  <XAxis dataKey="date" tickFormatter={formatDate} className="text-on-surface-variant" />
-                  <YAxis className="text-on-surface-variant" domain={[0, 1]} tickFormatter={v => (v * 100).toFixed(0) + "%"} />
+                  <XAxis dataKey="date" tickFormatter={formatDate} className="text-on-surface-variant" tick={{ fontSize: 11 }} />
+                  <YAxis className="text-on-surface-variant" domain={[0, 1]} tickFormatter={v => (v * 100).toFixed(0) + "%"} tick={{ fontSize: 11 }} />
                   <Tooltip content={<CustomTooltip />} />
-                  <Legend />
+                  <Legend layout="horizontal" align="center" verticalAlign="bottom" iconType="circle" iconSize={8} wrapperStyle={{ paddingTop: 20 }} />
                   {Object.entries(WASTE_TYPE_COLORS).map(([type, color]) => (
                     <Line
                       key={type}
@@ -350,36 +357,35 @@ export function Analytics() {
           </div>
         </div>
 
-        <div className="card">
+        <div className="card lg:col-span-1">
           <div className="card-header">
             <h2 className="section-title">Bin Fill Distribution</h2>
           </div>
           <div className="card-body">
             <div className="h-72 flex items-center justify-center">
-              <ResponsiveContainer width="80%" height="80%">
+              <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={binFillDistribution}
                     cx="50%"
                     cy="50%"
-                    innerRadius={60}
-                    outerRadius={100}
-                    fill="#8884d8"
+                    innerRadius={50}
+                    outerRadius={90}
                     dataKey="count"
                     nameKey="status"
                     label={({ status, count, percent }) => `${status}: ${count} (${(percent * 100).toFixed(0)}%)`}
                     labelLine={false}
                   >
                     {binFillDistribution.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[entry.status] || COLORS.primary} />
+                      <Cell key={`cell-${index}`} fill={BIN_STATUS_COLORS[entry.status] || COLORS.primary} />
                     ))}
                   </Pie>
-                  <Tooltip />
-                  <Legend />
+                  <Tooltip formatter={(value, name) => [value, name]} />
+                  <Legend layout="vertical" align="right" verticalAlign="middle" iconType="circle" iconSize={8} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            <div className="flex flex-wrap justify-center gap-4 mt-4">
+            <div className="flex flex-wrap justify-center gap-2 mt-4">
               {binFillDistribution.map((entry) => (
                 <span key={entry.status} className={cn("badge", `badge-${entry.status}`)}>
                   {entry.status}: {entry.count}
@@ -389,20 +395,20 @@ export function Analytics() {
           </div>
         </div>
 
-        <div className="card">
+        <div className="card lg:col-span-1">
           <div className="card-header">
-            <h2 className="section-title">Waste Type Breakdown (Today)</h2>
+            <h2 className="section-title">Waste Type Breakdown ({timeRange} Days)</h2>
           </div>
           <div className="card-body">
             <div className="h-72 flex items-center justify-center">
-              <ResponsiveContainer width="80%" height="80%">
+              <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={wasteTypeBreakdown}
                     cx="50%"
                     cy="50%"
-                    innerRadius={60}
-                    outerRadius={100}
+                    innerRadius={50}
+                    outerRadius={90}
                     dataKey="total_kg"
                     nameKey="waste_type"
                     label={({ waste_type, percentage }) => `${waste_type}: ${percentage}%`}
@@ -412,21 +418,31 @@ export function Analytics() {
                       <Cell key={`cell-${index}`} fill={WASTE_TYPE_COLORS[entry.waste_type] || COLORS.primary} />
                     ))}
                   </Pie>
-                  <Tooltip />
-                  <Legend />
+                  <Tooltip formatter={(value, name) => [`${value.toFixed(1)} kg`, name]} />
+                  <Legend layout="vertical" align="right" verticalAlign="middle" iconType="circle" iconSize={8} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
             <div className="flex flex-wrap justify-center gap-2 mt-4">
               {wasteTypeBreakdown.map((entry) => (
-                <span key={entry.waste_type} className="badge badge-neutral" style={{ backgroundColor: WASTE_TYPE_COLORS[entry.waste_type] + "20", borderColor: WASTE_TYPE_COLORS[entry.waste_type], color: WASTE_TYPE_COLORS[entry.waste_type] }}>
+                <span
+                  key={entry.waste_type}
+                  className="badge badge-neutral"
+                  style={{
+                    backgroundColor: WASTE_TYPE_COLORS[entry.waste_type] + "20",
+                    borderColor: WASTE_TYPE_COLORS[entry.waste_type],
+                    color: WASTE_TYPE_COLORS[entry.waste_type],
+                  }}
+                >
                   {entry.waste_type}: {entry.total_kg} kg ({entry.percentage}%)
                 </span>
               ))}
             </div>
           </div>
         </div>
+      </div>
 
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="card">
           <div className="card-header">
             <h2 className="section-title">Vehicle Efficiency</h2>
@@ -456,7 +472,7 @@ export function Analytics() {
                       <td className="font-mono tabular-nums">{v.total_distance_km}</td>
                       <td className="font-mono tabular-nums text-success">{v.total_fuel_saved_kg}</td>
                       <td>
-<div className="flex items-center gap-2 flex-wrap">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <div className="w-16 h-2 bg-surface-container-high rounded-full overflow-hidden">
                             <div
                               className={cn("h-full transition-all duration-300", v.current_battery_pct < 20 ? "bg-error" : "bg-secondary")}

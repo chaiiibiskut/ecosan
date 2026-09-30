@@ -85,6 +85,49 @@ export function DriverRouteNavigation() {
     }
   };
 
+  const activeRoutes = useMemo(() =>
+    routes.filter(r => r.status === "in_progress" || r.status === "planned"),
+    [routes]
+  );
+  const completedRoutes = useMemo(() =>
+    routes.filter(r => r.status === "completed"),
+    [routes]
+  );
+  const totalBinsInRoutes = useMemo(() =>
+    routes.reduce((sum, r) => sum + (Array.isArray(r.bin_ids) ? r.bin_ids.length : (r.bin_ids?.split(",").length || 0)), 0),
+    [routes]
+  );
+
+  const selectedRoute = useMemo(() =>
+    routes.find(r => r.id === selectedRouteId),
+    [routes, selectedRouteId]
+  );
+
+  const routeBins = useMemo(() => {
+    if (!selectedRoute) return [];
+    const binIds = Array.isArray(selectedRoute.bin_ids) ? selectedRoute.bin_ids : (selectedRoute.bin_ids?.split(",").map(Number) || []);
+    return binIds.map((binId, index) => {
+      const bin = bins.find(b => b.id === binId);
+      return {
+        bin,
+        binId,
+        sequence: index + 1,
+        status: index === 0 && selectedRoute.status === "in_progress" ? "in_progress" :
+                index < (selectedRoute.completed_bins || 0) ? "completed" : "planned",
+        distanceFromPrev: index === 0 ? 0 : Math.round(Math.random() * 2 + 0.5),
+      };
+    });
+  }, [selectedRoute, bins]);
+
+  const completedBinsCount = useMemo(() =>
+    routeBins.filter(b => b.status === "completed").length,
+    [routeBins]
+  );
+  const remainingBinsCount = useMemo(() =>
+    routeBins.filter(b => b.status !== "completed").length,
+    [routeBins]
+  );
+
   if (isLoading && routes.length === 0) {
     return (
       <div className="space-y-6 animate-fade-in">
@@ -136,30 +179,6 @@ export function DriverRouteNavigation() {
       </div>
     );
   }
-
-  const activeRoutes = routes.filter(r => r.status === "in_progress" || r.status === "planned");
-  const completedRoutes = routes.filter(r => r.status === "completed");
-  const totalBinsInRoutes = routes.reduce((sum, r) => sum + (Array.isArray(r.bin_ids) ? r.bin_ids.length : (r.bin_ids?.split(",").length || 0)), 0);
-
-  const selectedRoute = routes.find(r => r.id === selectedRouteId);
-  const routeBins = useMemo(() => {
-    if (!selectedRoute) return [];
-    const binIds = Array.isArray(selectedRoute.bin_ids) ? selectedRoute.bin_ids : (selectedRoute.bin_ids?.split(",").map(Number) || []);
-    return binIds.map((binId, index) => {
-      const bin = bins.find(b => b.id === binId);
-      return {
-        bin,
-        binId,
-        sequence: index + 1,
-        status: index === 0 && selectedRoute.status === "in_progress" ? "in_progress" :
-                index < (selectedRoute.completed_bins || 0) ? "completed" : "planned",
-        distanceFromPrev: index === 0 ? 0 : Math.round(Math.random() * 2 + 0.5),
-      };
-    });
-  }, [selectedRoute, bins]);
-
-  const completedBinsCount = routeBins.filter(b => b.status === "completed").length;
-  const remainingBinsCount = routeBins.filter(b => b.status !== "completed").length;
 
   return (
     <div className="space-y-6 animate-fade-in">

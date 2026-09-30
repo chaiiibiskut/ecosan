@@ -4,7 +4,7 @@ from typing import List
 
 class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite:///./ecosan.db"
-    CORS_ORIGINS: List[str] = ["http://localhost:5173"]
+    CORS_ORIGINS: List[str] = ["http://localhost:5173", "https://ecosan-seven.vercel.app"]
     APP_NAME: str = "EcoSan Intelligence API"
     DEBUG: bool = True
 
